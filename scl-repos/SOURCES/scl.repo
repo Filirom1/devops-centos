@@ -1,0 +1,37 @@
+[rhel-6-scl-mariadb55]
+name=rhel-6-scl-mariadb55
+baseurl=http://people.redhat.com/~hhorak/software-collections/mariadb55-rhel-6-candidate/
+enabled=1
+gpgcheck=0
+
+[rhel-6-scl-mysql55]
+name=rhel-6-scl-mysql55
+baseurl=http://people.redhat.com/~hhorak/software-collections/mysql55-rhel-6-candidate/
+enabled=1
+gpgcheck=0
+
+[rhel-6-scl-postgresql92]
+name=rhel-6-scl-postgresql92
+baseurl=http://people.redhat.com/~hhorak/software-collections/postgresql92-rhel-6-candidate/
+enabled=1
+gpgcheck=0
+
+[rhel-6-scl-unixODBC23]
+name=rhel-6-scl-unixODBC23
+baseurl=http://people.redhat.com/~hhorak/software-collections/unixODBC23-rhel-6-candidate/
+enabled=1
+gpgcheck=0
+
+[scl_python27]
+name=Python 2.7 Dynamic Software Collection
+baseurl=http://people.redhat.com/bkabrda/python27-rhel-6/
+failovermethod=priority
+enabled=1
+gpgcheck=0
+
+[scl_python33]
+name=Python 3.3 Dynamic Software Collection
+baseurl=http://people.redhat.com/bkabrda/python33-rhel-6/
+failovermethod=priority
+enabled=1
+gpgcheck=0
