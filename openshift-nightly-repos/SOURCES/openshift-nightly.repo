@@ -1,0 +1,12 @@
+[openshift-origin]
+priority=10
+baseurl=https://mirror.openshift.com/pub/openshift-origin/nightly/rhel-6/latest/x86_64/
+enabled=1
+gpgcheck=0
+
+[openshift-origin-deps]
+priority=10
+baseurl=https://mirror.openshift.com/pub/openshift-origin/rhel-6/x86_64/
+enabled=1
+gpgcheck=0
+exclude=php-pear-MDB2
