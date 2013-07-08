@@ -35,3 +35,17 @@ baseurl=http://people.redhat.com/bkabrda/python33-rhel-6/
 failovermethod=priority
 enabled=1
 gpgcheck=0
+
+[nodejs010]
+name=Node.js 0.10.x Software Collection RPM repository for RHEL 6
+baseurl=http://sochotni.fedorapeople.org/nodejs010-RHSCL-1-RHEL-6/Server/x86_64/os/
+failovermethod=priority
+enabled=1
+gpgcheck=0
+
+[php54]
+name=PHP 5.4 Software Collection for RHEL
+baseurl=http://people.redhat.com/rcollet/php54/rhel/$releasever/$basearch/
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0
