@@ -1,0 +1,165 @@
+From cf80a414546686b9a1960477ba7b5023a7251002 Mon Sep 17 00:00:00 2001
+From: Filirom1 <filirom1@gmail.com>
+Date: Wed, 12 Jun 2013 14:59:22 +0000
+Subject: [PATCH] Install openshift with a n-tier architecture
+
+---
+ conf/broker.conf                            |    3 +
+ config/environments/development.rb          |    1 +
+ config/environments/production.rb           |    1 +
+ config/environments/test.rb                 |    1 +
+ .../install_origin_with_a_n_tier_architecture.md   |   95 ++++++++++++++++++++
+ 6 files changed, 127 insertions(+), 2 deletions(-)
+ create mode 100644 documentation/install_origin_with_a_n_tier_architecture.md
+
+diff --git a/conf/broker.conf b/conf/broker.conf
+index 5a91208..148c210 100644
+--- a/conf/broker.conf
++++ b/conf/broker.conf
+@@ -93,3 +93,6 @@ DOWNLOAD_CARTRIDGES_ENABLED="true"
+ SSL_ENDPOINT="allow"
+ # SSL_ENDPOINT="deny"
+ # SSL_ENDPOINT="force"
++
++# Print SSH and GIT uri with fqdn. If "false", IP is printed
++SSH_FQDN="true"
+diff --git a/config/environments/development.rb b/config/environments/development.rb
+index c1d6b64..9fc983c 100644
+--- a/config/environments/development.rb
++++ b/config/environments/development.rb
+@@ -82,6 +82,7 @@ Broker::Application.configure do
+     :scope_expirations => OpenShift::Controller::Configuration.parse_expiration(conf.get('AUTH_SCOPE_TIMEOUTS'), 1.day),
+     :download_cartridges_enabled => conf.get_bool("DOWNLOAD_CARTRIDGES_ENABLED", "true"),
+     :ssl_endpoint => conf.get("SSL_ENDPOINT", "allow"),
++    :ssh_fqdn => conf.get("SSH_FQDN", "true"),
+   }
+ 
+   config.auth = {
+diff --git a/config/environments/production.rb b/config/environments/production.rb
+index 6cf2d6b..1726191 100644
+--- a/config/environments/production.rb
++++ b/config/environments/production.rb
+@@ -81,6 +81,7 @@ Broker::Application.configure do
+     :scope_expirations => OpenShift::Controller::Configuration.parse_expiration(conf.get('AUTH_SCOPE_TIMEOUTS'), 1.day),
+     :download_cartridges_enabled => conf.get_bool("DOWNLOAD_CARTRIDGES_ENABLED", "false"),    
+     :ssl_endpoint => conf.get("SSL_ENDPOINT", "allow"),
++    :ssh_fqdn => conf.get("SSH_FQDN", "true"),
+   }
+ 
+   config.auth = {
+diff --git a/config/environments/test.rb b/config/environments/test.rb
+index 40ff18c..46674b3 100644
+--- a/config/environments/test.rb
++++ b/config/environments/test.rb
+@@ -76,6 +76,7 @@ Broker::Application.configure do
+     :scope_expirations => OpenShift::Controller::Configuration.parse_expiration("session=1.days|2.days", 1.month),
+     :download_cartridges_enabled => conf.get_bool("DOWNLOAD_CARTRIDGES_ENABLED", "true"),
+     :ssl_endpoint => conf.get("SSL_ENDPOINT", "allow"),
++    :ssh_fqdn => conf.get("SSH_FQDN", "true"),
+   }
+ 
+   config.auth = {
+diff --git a/documentation/install_origin_with_a_n_tier_architecture.md b/documentation/install_origin_with_a_n_tier_architecture.md
+new file mode 100644
+index 0000000..2ba255d
+--- /dev/null
++++ b/documentation/install_origin_with_a_n_tier_architecture.md
+@@ -0,0 +1,95 @@
++# @markup markdown
++# @title Installing OpenShift Origin with a n-tier architecture
++
++# Install OpenShift Origin with a n-tier architecture
++
++A basic install of OpenShift will need you to setup a delegation from your entreprise DNS to the OpenShift DNS.
++But you can also setup OpenShift, to use a private DNS not exposed to any other services than OpenShift.
++
++In this setup, user applications will be accessible via nginx.
++SSH and git will be accessible with the IP address directly.
++
++This setup is quite interesting for companies wanting the broker, the console, SSH and git being only available on the private network.
++
++```
++      Internet
++         |
++         |
++        \|/
++    /---------\
++    |  Front  |
++___ |  -----  | ______________________________________
++    |  Nginx  |\             
++    |  80/443 | \          LAN
++    \---------/  \
++         |        \
++         |         \
++         |          /----------\
++         |          |  Middle  |
++         |          |  ------  |
++         |          |  Broker  |
++         |          |  Console |
++         |          |    DNS   |
++         |          \----------/
++         |              / /|\
++         |             /   |
++         |            /    |
++         |           /     |
++         |          /      |
++        \|/        /       |
++/----------------------\   |
++|    OpenShift Node    |   |
++|    --------------    |   |
++|   user applications  |   |
++\----------------------/   |
++        /|\                |
++         |                 |
++         |                 |
++      Git Push        Admin Access
++   (from the LAN)
++   
++```
++
++## Setup nginx
++
++Front servers accessible from internet, will proxy request to users applications via nginx.
++
++Put the following block in your nginx configuration file.
++For openshift alias to works, this block should be a catchall (put it at the begining).
++
++Replace the following variables by the corresponding values.
++* PUBLIC_IP: IP accessible from internet
++* OPENSHIFT_DNS_MASTER: openshift master DNS IP
++* OPENSHIFT_DNS_SLAVE: openshift slave DNS IP
++* SSL_CERT: path to your SSL certificate
++* SSL_KEY: path to your SSL key
++
++
++    server {
++            listen PUBLIC_IP:80;
++            listen PUBLIC_IP:443 ssl;
++            ssl_certificate SSL_CERT;
++            ssl_certificate_key SSL_KEY;
++
++            server_name  _;
++            resolver OPENSHIFT_DNS_MASTER OPENSHIFT_DNS_SLAVE;
++
++            proxy_read_timeout 1d;
++            location / {
++                    proxy_set_header X-Forwarded-Host $host;
++                    proxy_set_header X-Forwarded-Server $host;
++                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
++                    proxy_set_header Host $host;
++                    proxy_pass   $scheme://$host$uri$is_args$args;
++                    proxy_http_version 1.1;
++                    proxy_set_header Upgrade $http_upgrade;
++                    proxy_set_header Connection "upgrade";
++            }
++    }
++
++## Setup broker
++
++Change the following line in your broker.conf file
++
++    # Print SSH and GIT uri with fqdn. If "false", IP is printed
++    SSH_FQDN="false"
+-- 
+1.7.1
+
