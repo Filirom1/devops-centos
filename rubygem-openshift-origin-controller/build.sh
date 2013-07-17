@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ${0%/*}
 
 echo "before run:"
 echo "yum install scl-utils-build ruby193-build ruby193-rubygems-devel"
