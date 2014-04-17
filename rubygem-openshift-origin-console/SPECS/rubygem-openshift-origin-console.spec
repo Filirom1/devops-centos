@@ -9,66 +9,55 @@
 
 Summary:       OpenShift Origin Management Console
 Name:          rubygem-%{gem_name}
-Version: 1.12.1
-Release:       1%{?dist}.2
+Version: 1.18.0.1
+Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
 URL:           https://openshift.redhat.com
 Source0:       http://mirror.openshift.com/pub/openshift-origin/source/%{name}/rubygem-%{gem_name}-%{version}.tar.gz
-Patch0:        zone52.patch
+Patch0:        console.patch
 %if 0%{?fedora} >= 19
 Requires:      ruby(release)
 %else
 Requires:      %{?scl:%scl_prefix}ruby(abi) >= %{rubyabi}
 %endif
-Requires:      %{?scl:%scl_prefix}rubygems
-%if 0%{?fedora}%{?rhel} <= 6
-Requires:      %{?scl:%scl_prefix}rubygem(rails)
-Requires:      %{?scl:%scl_prefix}rubygem(compass-rails)
-Requires:      %{?scl:%scl_prefix}rubygem(rdiscount)
-Requires:      %{?scl:%scl_prefix}rubygem(formtastic)
-Requires:      %{?scl:%scl_prefix}rubygem(net-http-persistent)
-Requires:      %{?scl:%scl_prefix}rubygem(haml)
-Requires:      %{?scl:%scl_prefix}rubygem(ci_reporter)
 Requires:      %{?scl:%scl_prefix}rubygem(coffee-rails)
 Requires:      %{?scl:%scl_prefix}rubygem(compass-rails)
+Requires:      %{?scl:%scl_prefix}rubygem(compass-rails)
+Requires:      %{?scl:%scl_prefix}rubygem(formtastic)
+Requires:      %{?scl:%scl_prefix}rubygem(haml)
 Requires:      %{?scl:%scl_prefix}rubygem(jquery-rails)
-Requires:      %{?scl:%scl_prefix}rubygem(mocha)
-Requires:      %{?scl:%scl_prefix}rubygem(sass-rails)
-Requires:      %{?scl:%scl_prefix}rubygem(simplecov)
-Requires:      %{?scl:%scl_prefix}rubygem(test-unit)
-Requires:      %{?scl:%scl_prefix}rubygem(uglifier)
-Requires:      %{?scl:%scl_prefix}rubygem(webmock)
-Requires:      %{?scl:%scl_prefix}rubygem(poltergeist)
-Requires:      %{?scl:%scl_prefix}rubygem(konacha)
+# Bz1017671
 Requires:      %{?scl:%scl_prefix}rubygem(minitest)
-Requires:      %{?scl:%scl_prefix}rubygem(rspec-core)
+Requires:      %{?scl:%scl_prefix}rubygem(net-http-persistent)
+Requires:      %{?scl:%scl_prefix}rubygem(rails)
+Requires:      %{?scl:%scl_prefix}rubygem(rdiscount)
+Requires:      %{?scl:%scl_prefix}rubygems
+Requires:      %{?scl:%scl_prefix}rubygem(sass-rails)
+Requires:      %{?scl:%scl_prefix}rubygem(sass-twitter-bootstrap)
+Requires:      %{?scl:%scl_prefix}rubygem(uglifier)
 
+%if 0%{?fedora}%{?rhel} <= 6
 BuildRequires: %{?scl:%scl_prefix}build
 BuildRequires: scl-utils-build
-BuildRequires: %{?scl:%scl_prefix}rubygem(coffee-rails)
-BuildRequires: %{?scl:%scl_prefix}rubygem(sass-rails)
-BuildRequires: %{?scl:%scl_prefix}rubygem(jquery-rails)
-BuildRequires: %{?scl:%scl_prefix}rubygem(uglifier)
-BuildRequires: %{?scl:%scl_prefix}rubygem(rails)
-BuildRequires: %{?scl:%scl_prefix}rubygem(compass-rails)
-BuildRequires: %{?scl:%scl_prefix}rubygem(mocha)
-BuildRequires: %{?scl:%scl_prefix}rubygem(simplecov)
-BuildRequires: %{?scl:%scl_prefix}rubygem(test-unit)
-BuildRequires: %{?scl:%scl_prefix}rubygem(ci_reporter)
-BuildRequires: %{?scl:%scl_prefix}rubygem(webmock)
-BuildRequires: %{?scl:%scl_prefix}rubygem(sprockets)
-BuildRequires: %{?scl:%scl_prefix}rubygem(rdiscount)
-BuildRequires: %{?scl:%scl_prefix}rubygem(formtastic)
-BuildRequires: %{?scl:%scl_prefix}rubygem(net-http-persistent)
-BuildRequires: %{?scl:%scl_prefix}rubygem(haml)
-BuildRequires: %{?scl:%scl_prefix}rubygem(therubyracer)
-BuildRequires: %{?scl:%scl_prefix}rubygem(poltergeist)
-BuildRequires: %{?scl:%scl_prefix}rubygem(konacha)
-BuildRequires: %{?scl:%scl_prefix}rubygem(minitest)
-BuildRequires: %{?scl:%scl_prefix}rubygem(rspec-core)
-
 %endif
+
+BuildRequires: %{?scl:%scl_prefix}rubygem(coffee-rails)
+BuildRequires: %{?scl:%scl_prefix}rubygem(compass-rails)
+BuildRequires: %{?scl:%scl_prefix}rubygem(formtastic)
+BuildRequires: %{?scl:%scl_prefix}rubygem(haml)
+BuildRequires: %{?scl:%scl_prefix}rubygem(jquery-rails)
+BuildRequires: %{?scl:%scl_prefix}rubygem(minitest)
+BuildRequires: %{?scl:%scl_prefix}rubygem(net-http-persistent)
+BuildRequires: %{?scl:%scl_prefix}rubygem(rails)
+BuildRequires: %{?scl:%scl_prefix}rubygem(rdiscount)
+BuildRequires: %{?scl:%scl_prefix}rubygem(sass-rails)
+BuildRequires: %{?scl:%scl_prefix}rubygem(sass-twitter-bootstrap)
+BuildRequires: %{?scl:%scl_prefix}rubygem(sprockets)
+BuildRequires: %{?scl:%scl_prefix}rubygem(therubyracer)
+BuildRequires: %{?scl:%scl_prefix}rubygem(uglifier)
+
+
 BuildRequires: %{?scl:%scl_prefix}rubygems-devel
 %if 0%{?fedora} >= 19
 BuildRequires: ruby(release)
@@ -90,7 +79,7 @@ OpenShift Origin Management Console ri documentation
 
 %prep
 %setup -q
-%patch0 -p0
+%patch0 -p1
 
 %build
 %{?scl:scl enable %scl - << \EOF}
@@ -100,6 +89,10 @@ mkdir -p .%{gem_dir}
 
 %if 0%{?fedora}%{?rhel} <= 6
 rm -f Gemfile.lock
+
+# Remove dependencies not needed at runtime
+sed -i -e '/NON-RUNTIME BEGIN/,/NON-RUNTIME END/d' Gemfile
+
 bundle install --local
 
 mkdir -p %{buildroot}%{_var}/log/openshift/console/
@@ -153,8 +146,494 @@ cp -a ./%{gem_dir}/* %{buildroot}%{gem_dir}/
 %{gem_dir}/doc/%{gem_name}-%{version}
 
 %changelog
-* Tue Jul 16 2013 Filirom1 <filirom1@gmail.com> 1.12.1-2
-- Change OpenShift Origin into Zone52
+* Fri Dec 06 2013 Krishna Raman <kraman@gmail.com> 1.18.0.1-1
+- Bumping versions for OpenShift Origin Release 3 (kraman@gmail.com)
+- Fix bug 1037994: scopes table text overflows at small resolutions
+  (jliggitt@redhat.com)
+- Add cartridges with gear sizes via web console (contact@fabianofranz.com)
+- Bug 1035101 - show scope descriptions for parameterized scopes
+  (jliggitt@redhat.com)
+- Fix bug 1034567 Make input fields block at 640px (sgoodwin@redhat.com)
+- add zend-6.1 to rest_api cartridge_type_test (vvitek@redhat.com)
+- Merge pull request #4190 from jwforres/online_ui_402_account_signup
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4229 from liggitt/bug_1033682_id_uri_escaping
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4222 from liggitt/bug_1029678_site_test_error
+  (dmcphers+openshiftbot@redhat.com)
+- Allow for asset_host, default_url_host, and default_url_port options to be
+  configured in the console.conf file (jforrest@redhat.com)
+- Merge pull request #4208 from liggitt/bug_1030791_popup_visibility
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4206 from liggitt/bug_1032665_middle_click
+  (dmcphers+openshiftbot@redhat.com)
+- Fix bug 1033682 - encode model ids when generating broker urls
+  (jliggitt@redhat.com)
+- Improve async error logging (jliggitt@redhat.com)
+- Merge pull request #4216 from liggitt/bug_1032888_middle_click_copy
+  (dmcphers+openshiftbot@redhat.com)
+- Fix bug 1032888: select ssh url on mousedown (jliggitt@redhat.com)
+- Fix bug 1030791: popup visibility on iphone (jliggitt@redhat.com)
+- Fix bug 1032665 - make middle-click work on clickable tiles
+  (jliggitt@redhat.com)
+- Fix bug 1030774: domain info overflow (jliggitt@redhat.com)
+- bump_minor_versions for sprint 37 (admiller@redhat.com)
+
+* Wed Dec 04 2013 Krishna Raman <kraman@gmail.com> 1.18.0.1-1
+- Fix bug 1037994: scopes table text overflows at small resolutions
+  (jliggitt@redhat.com)
+- Add cartridges with gear sizes via web console (contact@fabianofranz.com)
+- Bug 1035101 - show scope descriptions for parameterized scopes
+  (jliggitt@redhat.com)
+- Fix bug 1034567 Make input fields block at 640px (sgoodwin@redhat.com)
+- add zend-6.1 to rest_api cartridge_type_test (vvitek@redhat.com)
+- Merge pull request #4190 from jwforres/online_ui_402_account_signup
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4229 from liggitt/bug_1033682_id_uri_escaping
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4222 from liggitt/bug_1029678_site_test_error
+  (dmcphers+openshiftbot@redhat.com)
+- Allow for asset_host, default_url_host, and default_url_port options to be
+  configured in the console.conf file (jforrest@redhat.com)
+- Merge pull request #4208 from liggitt/bug_1030791_popup_visibility
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4206 from liggitt/bug_1032665_middle_click
+  (dmcphers+openshiftbot@redhat.com)
+- Fix bug 1033682 - encode model ids when generating broker urls
+  (jliggitt@redhat.com)
+- Improve async error logging (jliggitt@redhat.com)
+- Merge pull request #4216 from liggitt/bug_1032888_middle_click_copy
+  (dmcphers+openshiftbot@redhat.com)
+- Fix bug 1032888: select ssh url on mousedown (jliggitt@redhat.com)
+- Fix bug 1030791: popup visibility on iphone (jliggitt@redhat.com)
+- Fix bug 1032665 - make middle-click work on clickable tiles
+  (jliggitt@redhat.com)
+- Fix bug 1030774: domain info overflow (jliggitt@redhat.com)
+- bump_minor_versions for sprint 37 (admiller@redhat.com)
+
+* Tue Nov 19 2013 Adam Miller <admiller@redhat.com> 1.17.8-1
+- Merge pull request #4201 from sg00dwin/bug-fixes
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4199 from liggitt/bug_1031916_gear_cost_tooltip
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4197 from liggitt/bug_1031537_gear_usage
+  (dmcphers+openshiftbot@redhat.com)
+- Apply span classes to set inputs to full column width. (sgoodwin@redhat.com)
+- Fix bug 1031916: Show correct gear cost tooltip (jliggitt@redhat.com)
+- Bug 1031537 - show gear usage for account once (jliggitt@redhat.com)
+
+* Tue Nov 19 2013 Adam Miller <admiller@redhat.com> 1.17.7-1
+- Fix bug 1031563 - highlight error messages generated by formtastic
+  (jliggitt@redhat.com)
+
+* Thu Nov 14 2013 Adam Miller <admiller@redhat.com> 1.17.6-1
+- Fix bug 1030211: currency display (jliggitt@redhat.com)
+
+* Wed Nov 13 2013 Adam Miller <admiller@redhat.com> 1.17.5-1
+- Fix bug 1029745: billing info form (jliggitt@redhat.com)
+- Merge pull request #4178 from jwforres/bug_1024046_silver_addtl_help_links
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 1024046 - template columns of the console help page (jforrest@redhat.com)
+- Merge pull request #4176 from liggitt/bug_1029241_test_case_selector
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4174 from jwforres/bug_1025635_help_popovers_on_ios
+  (dmcphers+openshiftbot@redhat.com)
+- Fix bug 1029241: Make test case selector match better (jliggitt@redhat.com)
+- Merge pull request #4172 from liggitt/bug_1028548_shared_domain_visibility
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4170 from liggitt/bug_1029303_refresh_user_capabilities
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 1025635 - help popovers don't close on iOS browsers (jforrest@redhat.com)
+- Bug 1028548: Make shared domains visible in settings if no owned domains are
+  present (jliggitt@redhat.com)
+- Fix Bug 1029303: Refresh user capabilities on apps page (jliggitt@redhat.com)
+
+* Tue Nov 12 2013 Adam Miller <admiller@redhat.com> 1.17.4-1
+- Bug 1029242: Change copy/paste help test (jliggitt@redhat.com)
+- Merge pull request #4156 from liggitt/bug_1029143_usage_graph_styles
+  (dmcphers@redhat.com)
+- Merge pull request #4163 from sg00dwin/bug-fixes
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4153 from liggitt/bug_1028896_ssh_field_copy
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for Bug 1022232 - the background color for the ssh url box is white in
+  Opera. And change text so as not to imply one "must upload their ssh key now"
+  otherwise they can't do it later. (sgoodwin@redhat.com)
+- Fix bug 1029143 - re-add usage graph styles (jliggitt@redhat.com)
+- Bug 1028896: Fix copy/paste of ssh url field (jliggitt@redhat.com)
+
+* Mon Nov 11 2013 Adam Miller <admiller@redhat.com> 1.17.3-1
+- Bug 1016413 - refresh domain info (jliggitt@redhat.com)
+
+* Fri Nov 08 2013 Adam Miller <admiller@redhat.com> 1.17.2-1
+- Fix bug 1025155: error message highlighting (jliggitt@redhat.com)
+
+* Thu Nov 07 2013 Adam Miller <admiller@redhat.com> 1.17.1-1
+- Improved error messages when trying to create app or add cartridge with
+  invalid gear sizes (contact@fabianofranz.com)
+- Show upgrade rates (jliggitt@redhat.com)
+- Enabling jenkins can throw an exception if the jenkins server was deleted
+  after the enable jenkins page was loaded. (jforrest@redhat.com)
+- bump_minor_versions for sprint 36 (admiller@redhat.com)
+
+* Thu Oct 31 2013 Adam Miller <admiller@redhat.com> 1.16.10-1
+- Merge pull request #4054 from abhgupta/abhgupta-dev
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4058 from smarterclayton/timeout_gear_groups_correctly
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for bug 1024669 (abhgupta@redhat.com)
+- Gear groups should timeout aggressively when fetching state
+  (ccoleman@redhat.com)
+- Cartridge-block icons smaller (sgoodwin@redhat.com)
+- Refactor setting consistent font-size within cartridge-block flow-
+  block.right. - Everything gets 12px Noticed on Go carts the p.created line
+  wasn't aligned left with icon. - Set narrower width on icon-logo then
+  adjusted margin-right to space title - Made .cartridge-block padding
+  consistent. (sgoodwin@redhat.com)
+
+* Wed Oct 30 2013 Adam Miller <admiller@redhat.com> 1.16.9-1
+- Merge pull request #4050 from sg00dwin/update-icon-set
+  (dmcphers+openshiftbot@redhat.com)
+- Update iconfont set with latest. - Replace MySQL and Java. Add Clojure,
+  Scala, Custom, Grails, Joomla, Jquery and Play - new icomoon app .json file
+  of set - Remove older openshift-logos-icon.dev.svg icomoon app file of set
+  (sgoodwin@redhat.com)
+
+* Wed Oct 30 2013 Adam Miller <admiller@redhat.com> 1.16.8-1
+- Merge pull request #4046 from jwforres/remove_external_link
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4045 from liggitt/bug_1024489_public_key_logging
+  (dmcphers+openshiftbot@redhat.com)
+- Remove external link indicator where it doesnt make sense
+  (jforrest@redhat.com)
+- Fix bug 1024489 - filter logging of public keys (jliggitt@redhat.com)
+- Merge pull request #4038 from smarterclayton/handle_custom_cartridges
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4040 from jwforres/alias_visual_tweaks
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4039 from liggitt/ui_tweaks
+  (dmcphers+openshiftbot@redhat.com)
+- Fix tests (dmcphers@redhat.com)
+- Visual tweaks to the add and edit aliases pages (jforrest@redhat.com)
+- UI Tweaks (jliggitt@redhat.com)
+- Additional flash fixes (ccoleman@redhat.com)
+- Handle custom cartridge metadata (ccoleman@redhat.com)
+
+* Tue Oct 29 2013 Adam Miller <admiller@redhat.com> 1.16.7-1
+- Add logo icons to applications/show Create mixin to apply rules based on icon
+  location usage. Adjustments to cartidge-blocks Reorder configure and
+  "external icon" link to icons vertically line up down cartridges Fine tuning
+  needed for presentation on app details (sgoodwin@redhat.com)
+- Update storage quota command (ccoleman@redhat.com)
+
+* Mon Oct 28 2013 Adam Miller <admiller@redhat.com> 1.16.6-1
+- Changes pertain to app creation page, specifically app name with namespace
+  input fields (sgoodwin@redhat.com)
+
+* Fri Oct 25 2013 Adam Miller <admiller@redhat.com> 1.16.5-1
+- Merge pull request #3972 from liggitt/bug_1020009_max_domains_capability
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3986 from liggitt/bug_1023138_show_custom_scopes
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3983 from liggitt/bug_1022436_edit_domain
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3978 from liggitt/application_create_name
+  (dmcphers+openshiftbot@redhat.com)
+- Fix bug 1023138 - show custom scopes in UI (jliggitt@redhat.com)
+- Add tests for domain delete in UI (jliggitt@redhat.com)
+- Add ability to delete domains from the UI (jliggitt@redhat.com)
+- Fix bug 1022436 - domain edit and update methods always use user's first
+  domain (jliggitt@redhat.com)
+- Move items away from %%span.add-on to make border radius rules work
+  (jliggitt@redhat.com)
+
+* Thu Oct 24 2013 Adam Miller <admiller@redhat.com> 1.16.4-1
+- kerberos work for broker and console (jliggitt@redhat.com)
+- Merge branch 'master' into console_light_theme_dev (sgoodwin@redhat.com)
+- Adding alert-success for successful auth token creation Adding .help-inline
+  class to align text with input correctly UI adjustments to the
+  authorization/new page so the creation options are more understandable to new
+  users Adding section.row-content for spacing between setting types
+  (sgoodwin@redhat.com)
+
+* Wed Oct 23 2013 Adam Miller <admiller@redhat.com> 1.16.3-1
+- Merge pull request #3963 from sg00dwin/console_light_theme_dev
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3961 from rhamilto/bug-1021853
+  (dmcphers+openshiftbot@redhat.com)
+- Various fine tuning and cleanup Reduce space btw table and .btn-toolbar
+  Remove alert max-width because it's not needed. Make .cartridge-block have a
+  min-height so they are consistent by defaul Mixin rules target origin logo to
+  position vertically @import new _tables partial since common no longer
+  references the vendor default Remove cartridge icon from app details. Looks
+  better and embedded don't have specific icon so it was looking off. Apply
+  .row-content class to <sections> which apply default margin bottoms
+  (sgoodwin@redhat.com)
+- Bug 1021853: adding .table-fixed to address the bug and adding it to the
+  needed tables, misc table cleanup (rhamilto@redhat.com)
+
+* Tue Oct 22 2013 Adam Miller <admiller@redhat.com> 1.16.2-1
+- Adding a specific class for icons associated with h1 headings so as to not
+  effect all icons within h1. e.g. application/show Remove old style .gear-
+  numbers which is no longer used Change "external link" icon color to grey
+  instead of black Remove inadvertant dupulication of font-size on .gear-icon
+  (sgoodwin@redhat.com)
+- commented out test on console (lnader@redhat.com)
+- Bug 892899 (lnader@redhat.com)
+- I reworked the page markup so that app-list and app-cartridges are only
+  wrapping "main" column. Then change scss to style appropriately.
+  (sgoodwin@redhat.com)
+- Merge pull request #3942 from brenton/BZ1017671
+  (dmcphers+openshiftbot@redhat.com)
+- Sorting Requires for the console gem (bleanhar@redhat.com)
+- Bug 1017671 - Minitest is required by parts of activesupport for the console
+  gem (bleanhar@redhat.com)
+
+* Mon Oct 21 2013 Adam Miller <admiller@redhat.com> 1.16.1-1
+- Merge pull request #3927 from liggitt/ui_tweaks
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3917 from jwforres/tile_logos
+  (dmcphers+openshiftbot@redhat.com)
+- UI tweaks (jliggitt@redhat.com)
+- Pull logo haml generation into a helper (jforrest@redhat.com)
+- Adding application and domain icon to their respective page heading
+  Adjustments to icon-text-shadow mixin to optimize contrast of icon on light
+  background, which was currently unused (sgoodwin@redhat.com)
+- Add helper for icons on quickstart and cartridge tiles (jforrest@redhat.com)
+- Bug fix where footer is one pixel too tall (causing a vertical scroll bar
+  when none is needed) and vertically centering logo and copyright
+  (rhamilto@redhat.com)
+- Merge pull request #3901 from sg00dwin/console_light_theme_dev
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3883 from pravisankar/dev/ravi/card22
+  (dmcphers+openshiftbot@redhat.com)
+- Remove alert border Adjust variable border colors which will be used behind
+  the alert icon Label margin left reduced to align with tile title Refactoring
+  of tile-table scss with adjustments to support add cart tiles with icons
+  Remove commented haml from _tile.html.haml and _application_type.html.haml
+  (sgoodwin@redhat.com)
+- Merge pull request #3887 from jwforres/bug_1019132_remove_member_not_saved
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3890 from liggitt/bug_987758_formtastic_errors
+  (dmcphers@redhat.com)
+- Allow gear_size parameter during application creation and cartridge addition.
+  (rpenta@redhat.com)
+- Merge pull request #3877 from rhamilto/master
+  (dmcphers+openshiftbot@redhat.com)
+- Fix bug 987758 - formtastic error rendering (jliggitt@redhat.com)
+- Merge pull request #3525 from mmahut/mmahut/formtastic_dots
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 1019132 - removed member is not saved (jforrest@redhat.com)
+- Merge pull request #3874 from brenton/remove_test_deps3
+  (dmcphers+openshiftbot@redhat.com)
+- Removing test dependencies from Broker/Console build and runtime.
+  (bleanhar@redhat.com)
+- BZ 1018656:  adjustments so the letter "e" doesn't close up when rendered by
+  IE (rhamilto@redhat.com)
+- Change set: Fix default alert border Smaller copyright text, should have been
+  done with site release Make "see all" cart link smaller and tuck in over
+  groupings Fine tune app tile text .flow-block.right > span Make popover text
+  font-weight normal. General note - text below 13px shouldn't be thin because
+  it renders fuzzy and breaks apart on non-retina displays.
+  (sgoodwin@redhat.com)
+- Remove custom line-heights from individual button sizes Tweak padding and
+  sizing Create +.btn [class*="icon-"] style to position icon exact vertical
+  center Remove default left offset from icon class rule  - this was to add
+  space btw icon and text, but it causes issues when icons used within .btn  -
+  will have to add &nbsp; or come up with another option Alert borders weren't
+  showing b/c no border style & width set. Fixed it. - also simplified their
+  color function to just darken Introduced .table-no-borders class which is
+  used on the domain members table Fixed "delete" x button
+  (sgoodwin@redhat.com)
+- Changes: icons should have line-height mozilla specific font smoothing add
+  line-height in ems to small and tiny sizes variablize large, small, tiny,
+  extratiny (sgoodwin@redhat.com)
+- Make table-consdensed (sgoodwin@redhat.com)
+- Merge pull request #3825 from jwforres/console_light_theme_squash
+  (dmcphers+openshiftbot@redhat.com)
+- Merge branch 'master' into console_light_theme_squash (jforrest@redhat.com)
+- Fix bug 1016463 - either show create domain link or link to see other domains
+  (jliggitt@redhat.com)
+- Updated testcases for the console light theme (jforrest@redhat.com)
+- Merge pull request #3735 from smarterclayton/display_custom_cart_name
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3773 from
+  smarterclayton/to_stage_error_on_changing_members
+  (dmcphers+openshiftbot@redhat.com)
+- Making Members tables consistent between app/show and domain/show
+  (rhamilto@redhat.com)
+- Changes: Differentiate lead and large font sizes H1 1px larger so that
+  offsets the 1px increase in lead Make important-list slightly more important
+  (size) .table-hover was incorrect Make link in help_helper for signin page
+  (sgoodwin@redhat.com)
+- Test failure (ccoleman@redhat.com)
+- Unifying table styles for /settings (rhamilto@redhat.com)
+- Console light theme, aliases layout updates (ccoleman@redhat.com)
+- Console light theme, active states on tab navigation (jforrest@redhat.com)
+- Console light theme, updated logos (sgoodwin@redhat.com)
+- Light theme for console, new nav header, remove breadcrumbs
+  (rhamilto@redhat.com)
+- Fix bug 1016432 - restrict domain rename to owner (jliggitt@redhat.com)
+- console: fixing a bug in pull request #3525 (mmahut@redhat.com)
+- Test estimate method (jliggitt@redhat.com)
+- Job error when changing members of app (ccoleman@redhat.com)
+- Fix typo in gear sizes, parse members params correctly (jliggitt@redhat.com)
+- bump_minor_versions for sprint 35 (admiller@redhat.com)
+- Display the cart name for custom carts (ccoleman@redhat.com)
+- console: fixing the joint in the form builder (mmahut@redhat.com)
+- console: do not add a dot at the end of the error message if it already
+  exists (mmahut@redhat.com)
+
+* Tue Oct 01 2013 Adam Miller <admiller@redhat.com> 1.15.7-1
+- Merge pull request #3729 from smarterclayton/suggest_app_name
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3738 from jwforres/bug_1012342_delete_alias_fails
+  (dmcphers+openshiftbot@redhat.com)
+- Fix tests (dmcphers@redhat.com)
+- Should use up to, not inclusive, review comment (ccoleman@redhat.com)
+- Bug 1012342 - delete alias on aliases page fails (jforrest@redhat.com)
+- Suggest an application name if possible (ccoleman@redhat.com)
+
+* Mon Sep 30 2013 Troy Dawson <tdawson@redhat.com> 1.15.6-1
+- Merge pull request #3727 from smarterclayton/fix_environment_variable_routes
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3726 from jwforres/grammar_fix
+  (dmcphers+openshiftbot@redhat.com)
+- Update singular routes to use singular_path (ccoleman@redhat.com)
+- Merge pull request #3723 from jwforres/membership_plus_console
+  (dmcphers+openshiftbot@redhat.com)
+- Grammar fix in applications list page help links (jforrest@redhat.com)
+- Show members on the application page (jforrest@redhat.com)
+
+* Fri Sep 27 2013 Troy Dawson <tdawson@redhat.com> 1.15.5-1
+- Failing unit tests due to last minute changes (ccoleman@redhat.com)
+- Membership changes (jliggitt@redhat.com)
+- Origin UI 72 - Membership (ccoleman@redhat.com)
+
+* Wed Sep 25 2013 Troy Dawson <tdawson@redhat.com> 1.15.4-1
+- Merge pull request #3699 from jwforres/wrong_scale_arg_in_help
+  (dmcphers+openshiftbot@redhat.com)
+- Fix rhc command in not scalable help text (jforrest@redhat.com)
+
+* Tue Sep 24 2013 Troy Dawson <tdawson@redhat.com> 1.15.3-1
+- Allow for version 4.0.x of haml gem to be used (jforrest@redhat.com)
+
+* Tue Sep 24 2013 Troy Dawson <tdawson@redhat.com> 1.15.2-1
+- Remove the icon font shadow unless explicitly included with a class. Causes
+  problems with varied background colors. (jforrest@redhat.com)
+
+* Fri Sep 13 2013 Troy Dawson <tdawson@redhat.com> 1.15.1-1
+- Bump up version (tdawson@redhat.com)
+
+* Thu Aug 29 2013 Adam Miller <admiller@redhat.com> 1.14.1-1
+- Updated cartridges and scripts for phpmyadmin-4 (mfojtik@redhat.com)
+- Handle .resultset.json (dmcphers@redhat.com)
+- Fixing console RPM spec to install ruby dependencies on Fedora 19
+  (kraman@gmail.com)
+- bump_minor_versions for sprint 33 (admiller@redhat.com)
+
+* Wed Aug 21 2013 Adam Miller <admiller@redhat.com> 1.13.6-1
+- Merge pull request #3437 from smarterclayton/alias_overzealous_messaging
+  (dmcphers+openshiftbot@redhat.com)
+- Review comments (ccoleman@redhat.com)
+- Aliases are writing too many flashes when errors are present
+  (ccoleman@redhat.com)
+
+* Tue Aug 20 2013 Adam Miller <admiller@redhat.com> 1.13.5-1
+- Merge pull request #3415 from tdawson/tdawson/mirrorfixes/2013-08
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 997080 - chrome input fields - turn of break word (jforrest@redhat.com)
+- fix old mirror url (tdawson@redhat.com)
+- Merge pull request #3408 from abhgupta/abhgupta-scheduler
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for bug 995034 (abhgupta@redhat.com)
+
+* Mon Aug 19 2013 Adam Miller <admiller@redhat.com> 1.13.4-1
+- Merge pull request #3382 from smarterclayton/builder_scope_incorrect
+  (dmcphers+openshiftbot@redhat.com)
+- additional version changes (dmcphers@redhat.com)
+- <cartridge versions> origin_runtime_219, fix up cart references for renamed
+  cart https://trello.com/c/evcTYKdn/219-3-adjust-out-of-date-cartridge-
+  versions (jolamb@redhat.com)
+- Fix builder scope by introducing a domain builder scope (ccoleman@redhat.com)
+
+* Fri Aug 16 2013 Adam Miller <admiller@redhat.com> 1.13.3-1
+- <cartridges> Additional cart version and test fixes (jolamb@redhat.com)
+
+* Wed Aug 14 2013 Adam Miller <admiller@redhat.com> 1.13.2-1
+- Default to test mode membership off (ccoleman@redhat.com)
+- Catch more exceptions from broker (ccoleman@redhat.com)
+- * Implement a membership model for OpenShift that allows an efficient query
+  of user access based on each resource. * Implement scope limitations that
+  correspond to specific permissions * Expose membership info via the REST API
+  (disableable via config) * Allow multiple domains per user, controlled via a
+  configuration flag * Support additional information per domain
+  (application_count and gear_counts) to improve usability * Let domains
+  support the allowed_gear_sizes option, which limits the gear sizes available
+  to apps in that domain * Simplify domain update interactions - redundant
+  validation removed, and behavior of responses differs slightly. * Implement
+  migration script to enable data (ccoleman@redhat.com)
+
+* Thu Aug 08 2013 Adam Miller <admiller@redhat.com> 1.13.1-1
+- Card 57 - Fix typo (jforrest@redhat.com)
+- Card 57 - gemify bootstrap, use sass-twitter-bootstrap gem
+  (jforrest@redhat.com)
+- bump_minor_versions for sprint 32 (admiller@redhat.com)
+
+* Wed Jul 31 2013 Adam Miller <admiller@redhat.com> 1.12.4-1
+- Consolidated docs for admin/mgmt consoles, cartridges (hripps@redhat.com)
+- Bug 985952 - should not touch certificate if chain was not provided
+  (ffranz@redhat.com)
+- Bug 985952 - strip certificate content when appending chain
+  (ffranz@redhat.com)
+
+* Mon Jul 29 2013 Adam Miller <admiller@redhat.com> 1.12.3-1
+- Add omit method for functional and integration tests (jliggitt@redhat.com)
+- Merge remote-tracking branch 'origin/master' into changes_for_membership
+  (ccoleman@redhat.com)
+- Merge remote-tracking branch 'origin/master' into changes_for_membership
+  (ccoleman@redhat.com)
+- WebMock causes errors in Net::HTTP::Persistent, disable except when needed
+  (ccoleman@redhat.com)
+- Support LIST_DOMAINS_BY_OWNER, SHOW_DOMAIN, and SHOW_APPLICATION_BY_DOMAIN
+  (ccoleman@redhat.com)
+- Support running broker tests directly Force scopes to use checked ids and
+  avoid symbolizing arbitrary strings Use .present? instead of .count > 0 (for
+  performance) Handle ValidationExceptions globally (ccoleman@redhat.com)
+
+* Wed Jul 24 2013 Adam Miller <admiller@redhat.com> 1.12.2-1
+- Correctly create custom apps (ccoleman@redhat.com)
+- Merge remote-tracking branch 'origin/master' into
+  handle_global_exceptions_properly (ccoleman@redhat.com)
+- API version is not locked when using PUT/POST/DELETE due to only Content-Type
+  being sent (ccoleman@redhat.com)
+- Merge pull request #3095 from smarterclayton/custom_cart_test
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3111 from pravisankar/dev/ravi/bug983038
+  (dmcphers+openshiftbot@redhat.com)
+- Reset capybara between tests, restore cached cookies with correct domain
+  (jliggitt@redhat.com)
+- Remove ecdsa ssh key type from supported list. Rationale: Due to patent
+  concerns, ECC support is not bundled in fedora/rhel(needed for ecdsa key
+  generation).            So even if someone has a valid ecdsa keys, sshd
+  server on our node won't be able to authenticate the user.
+  (rpenta@redhat.com)
+- Convert keys_controller - work around double deletion bug in console code
+  (ccoleman@redhat.com)
+- Merge remote-tracking branch 'origin/master' into
+  handle_global_exceptions_properly (ccoleman@redhat.com)
+- Merge remote-tracking branch 'origin/master' into
+  handle_global_exceptions_properly (ccoleman@redhat.com)
+- Test custom cart creation (ccoleman@redhat.com)
+- Merge pull request #3037 from Miciah/console-application_types-custom_types-
+  fix (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3082 from smarterclayton/formtastic_cant_be_too_new
+  (dmcphers+openshiftbot@redhat.com)
+- Authorizations will not return specific id messages (ccoleman@redhat.com)
+- Add test cases for not_found messages and behavior (ccoleman@redhat.com)
+- Formtastic can't be newer than 1.2.x (ccoleman@redhat.com)
+- Add test cases for not_found messages and behavior (ccoleman@redhat.com)
+- Console: Make sure excluded_tags is set (miciah.masters@gmail.com)
 
 * Fri Jul 12 2013 Adam Miller <admiller@redhat.com> 1.12.1-1
 - bump_minor_versions for sprint 31 (admiller@redhat.com)

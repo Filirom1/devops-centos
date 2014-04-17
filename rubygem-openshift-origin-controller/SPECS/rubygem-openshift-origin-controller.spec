@@ -9,14 +9,13 @@
 
 Summary:       Cloud Development Controller
 Name:          rubygem-%{gem_name}
-Version: 1.12.1
-Release:       1%{?dist}.2
+Version: 1.18.0.1
+Release:       1%{?dist}
 Group:         Development/Languages
 License:       ASL 2.0
 URL:           http://www.openshift.com
 Source0:       http://mirror.openshift.com/pub/openshift-origin/source/%{name}/rubygem-%{gem_name}-%{version}.tar.gz
-Patch0:        0001-Install-openshift-with-a-n-tier-architecture.patch
-
+Patch0:        controller.patch
 %if 0%{?fedora} >= 19
 Requires:      ruby(release)
 %else
@@ -25,6 +24,7 @@ Requires:      %{?scl:%scl_prefix}ruby(abi) >= %{rubyabi}
 Requires:      %{?scl:%scl_prefix}rubygems
 Requires:      %{?scl:%scl_prefix}rubygem(state_machine)
 Requires:      %{?scl:%scl_prefix}rubygem(dnsruby)
+Requires:      %{?scl:%scl_prefix}rubygem(httpclient)
 Requires:      rubygem(openshift-origin-common)
 %if 0%{?fedora}%{?rhel} <= 6
 BuildRequires: %{?scl:%scl_prefix}build
@@ -87,8 +87,983 @@ mkdir -p %{buildroot}/etc/openshift/
 %{gem_dir}/doc/%{gem_name}-%{version}
 
 %changelog
-* Tue Jul 16 2013 Filirom1 <filirom1@gmail.com> 1.10.2-2
-- Patch with https://github.com/openshift/origin-server/pull/2877/files
+* Fri Dec 06 2013 Krishna Raman <kraman@gmail.com> 1.18.0.1-1
+- Bumping versions for OpenShift Origin Release 3 (kraman@gmail.com)
+- fix bz1036507 - improve error message (rchopra@redhat.com)
+- Bug 1034626 - No cartridge status is shown (bparees@redhat.com)
+- Merge pull request #4239 from lnader/bugs (dmcphers+openshiftbot@redhat.com)
+- Bug 1032436 (lnader@redhat.com)
+- Creating group instance and components on gear creation (abhgupta@redhat.com)
+- Flatten 'gears' in application mongo record i.e. 'gears' field will be
+  sibling of 'group_instances'. (rpenta@redhat.com)
+- Ensuring that app is not saved without core attributes set
+  (abhgupta@redhat.com)
+- Merge pull request #4241 from rajatchopra/fix_parallel_msg
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4213 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- fix bz1031821 - node exceptions are now propagated. Failed ops are also
+  mentioned in the error message (rchopra@redhat.com)
+- Added ; to list of chars not allowed (lnader@redhat.com)
+- Added checking for git ref according to git-check-ref-format rules
+  (lnader@redhat.com)
+- Changed deprecated to obsolete (lnader@redhat.com)
+- Merge pull request #4210 from bparees/mock_error
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4204 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4209 from mrunalp/dev/upgrade_endpoints
+  (dmcphers+openshiftbot@redhat.com)
+- bug 997924: jbossas-7 build fails if the app has mock-plugin addon
+  (bparees@redhat.com)
+- card_169 (lnader@redhat.com)
+- bump_minor_versions for sprint 37 (admiller@redhat.com)
+- Migrate endpoints during upgrade. (mrunalp@gmail.com)
+
+* Wed Dec 04 2013 Krishna Raman <kraman@gmail.com> 1.18.0.1-1
+- fix bz1036507 - improve error message (rchopra@redhat.com)
+- Bug 1034626 - No cartridge status is shown (bparees@redhat.com)
+- Merge pull request #4239 from lnader/bugs (dmcphers+openshiftbot@redhat.com)
+- Bug 1032436 (lnader@redhat.com)
+- Creating group instance and components on gear creation (abhgupta@redhat.com)
+- Flatten 'gears' in application mongo record i.e. 'gears' field will be
+  sibling of 'group_instances'. (rpenta@redhat.com)
+- Ensuring that app is not saved without core attributes set
+  (abhgupta@redhat.com)
+- Merge pull request #4241 from rajatchopra/fix_parallel_msg
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4213 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- fix bz1031821 - node exceptions are now propagated. Failed ops are also
+  mentioned in the error message (rchopra@redhat.com)
+- Added ; to list of chars not allowed (lnader@redhat.com)
+- Added checking for git ref according to git-check-ref-format rules
+  (lnader@redhat.com)
+- Changed deprecated to obsolete (lnader@redhat.com)
+- Merge pull request #4210 from bparees/mock_error
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4204 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4209 from mrunalp/dev/upgrade_endpoints
+  (dmcphers+openshiftbot@redhat.com)
+- bug 997924: jbossas-7 build fails if the app has mock-plugin addon
+  (bparees@redhat.com)
+- card_169 (lnader@redhat.com)
+- bump_minor_versions for sprint 37 (admiller@redhat.com)
+- Migrate endpoints during upgrade. (mrunalp@gmail.com)
+
+* Thu Nov 14 2013 Adam Miller <admiller@redhat.com> 1.17.6-1
+- Bug 1028393 (lnader@localhost.localdomain)
+
+* Wed Nov 13 2013 Adam Miller <admiller@redhat.com> 1.17.5-1
+- fix app status calls for sparse components (rchopra@redhat.com)
+
+* Tue Nov 12 2013 Adam Miller <admiller@redhat.com> 1.17.4-1
+- Merge pull request #4164 from
+  liggitt/bug_1029166_improve_domain_configure_error (dmcphers@redhat.com)
+- Merge pull request #4167 from
+  smarterclayton/not_using_index_for_authorizations
+  (dmcphers+openshiftbot@redhat.com)
+- No index on authorizations table (ccoleman@redhat.com)
+- Bug 1021380 (dmcphers@redhat.com)
+- Merge pull request #4122 from jwforres/bug_1025691_add_member_using_token
+  (dmcphers+openshiftbot@redhat.com)
+- Fix bug 1029166: Improve error message on domain configure
+  (jliggitt@redhat.com)
+- Bug 1025691 - can't add member to a domain when authenticate with token
+  (jforrest@redhat.com)
+
+* Mon Nov 11 2013 Adam Miller <admiller@redhat.com> 1.17.3-1
+- Merge pull request #4139 from abhgupta/abhgupta-dev
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4140 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for bug 1028284 (abhgupta@redhat.com)
+- set_group_override fix (rchopra@redhat.com)
+- port interface being removed may not exist (rchopra@redhat.com)
+
+* Fri Nov 08 2013 Adam Miller <admiller@redhat.com> 1.17.2-1
+- Fix cartridge extended tests: force erasure of installed cartridges during
+  tests (pmorie@gmail.com)
+- test case improvements (dmcphers@redhat.com)
+
+* Thu Nov 07 2013 Adam Miller <admiller@redhat.com> 1.17.1-1
+- Getting singleton tests in the right place (dmcphers@redhat.com)
+- Merge pull request #4106 from pravisankar/dev/ravi/card639
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3999 from fabianofranz/master
+  (dmcphers+openshiftbot@redhat.com)
+- hotfix for deploy code to handle older apps which do not have 'sparse_carts'
+  field populated (rchopra@redhat.com)
+- Improved error messages when trying to create app or add cartridge with
+  invalid gear sizes (contact@fabianofranz.com)
+- Rest API Deployment support for passing the artifact url parameter with
+  associated tests in the broker and node.  Enabling the artifact url param in
+  the rest models. (jajohnso@redhat.com)
+- Allow adding large gear size to users irrespective of their plan If the user
+  is enrolled into a plan, do not store capabilites in cloud user mongo record
+  instead get the capabilities based on their plan. Any explicitly set
+  capabilities will be stored in user record. Fix test cases
+  (rpenta@redhat.com)
+- Merge pull request #4097 from abhgupta/abhgupta-scheduler
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4084 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Fixing the run_jobs logic for op groups being rolled back
+  (abhgupta@redhat.com)
+- fix bz996952 - use gear_id with ssh key, rather than component_id
+  (rchopra@redhat.com)
+- Merge pull request #4100 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 1019163 (lnader@redhat.com)
+- Added check to ensure the new cartridge does not clash with existing
+  web_proxy (lnader@redhat.com)
+- splitting runtime tests (dmcphers@redhat.com)
+- spliting runtime components (dmcphers@redhat.com)
+- Merge pull request #4073 from detiber/brokerExtendedTests
+  (dmcphers+openshiftbot@redhat.com)
+- Some rest-domains.feature tests rely on DEFAULT_MAX_DOMAINS = 1
+  (jdetiber@redhat.com)
+- haproxy cartridge's max limit should be set to -1 when making the app ha
+  (rchopra@redhat.com)
+- bump_minor_versions for sprint 36 (admiller@redhat.com)
+
+* Thu Oct 31 2013 Adam Miller <admiller@redhat.com> 1.16.11-1
+- Merge pull request #4064 from abhgupta/abhgupta-dev
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for bug 1025218 (abhgupta@redhat.com)
+
+* Thu Oct 31 2013 Adam Miller <admiller@redhat.com> 1.16.10-1
+- Merge pull request #4054 from abhgupta/abhgupta-dev
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4058 from smarterclayton/timeout_gear_groups_correctly
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for bug 1024669 (abhgupta@redhat.com)
+- Merge pull request #4052 from rajatchopra/fix_jboss_expose_port
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4055 from abhgupta/abhgupta-scheduler
+  (dmcphers+openshiftbot@redhat.com)
+- Gear groups should timeout aggressively when fetching state
+  (ccoleman@redhat.com)
+- Merge pull request #4047 from ncdc/bz1024698
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for bug 1025033 (abhgupta@redhat.com)
+- Bug 1024698 (andy.goldstein@gmail.com)
+- fix bz1023514 and jboss carts (rchopra@redhat.com)
+
+* Wed Oct 30 2013 Adam Miller <admiller@redhat.com> 1.16.9-1
+- Merge pull request #4043 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- call expose port in configure order (rchopra@redhat.com)
+
+* Wed Oct 30 2013 Adam Miller <admiller@redhat.com> 1.16.8-1
+- Merge pull request #3958 from detiber/fixTests
+  (dmcphers+openshiftbot@redhat.com)
+- Checking deployment validations for bug 1023381, 1023304
+  (abhgupta@redhat.com)
+- Fix for bug 1024493 (abhgupta@redhat.com)
+- Merge pull request #4036 from kraman/bugfix2
+  (dmcphers+openshiftbot@redhat.com)
+- <tests> Update test tags and enable REMOTE_USER auth for tests
+  (jdetiber@redhat.com)
+- Test updates to remove hardcoded dev.rhcloud.com and disable platform-
+  endpoints on origin due to missing dependencies. (kraman@gmail.com)
+
+* Tue Oct 29 2013 Adam Miller <admiller@redhat.com> 1.16.7-1
+- Merge pull request #4026 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- Added missing routes (lnader@redhat.com)
+- Bug 1023304 (lnader@redhat.com)
+- remove extra set (dmcphers@redhat.com)
+
+* Mon Oct 28 2013 Adam Miller <admiller@redhat.com> 1.16.6-1
+- Fix for bug 1022948 (abhgupta@redhat.com)
+- Don't use app_dns == gear_dns with update_cluster (andy.goldstein@gmail.com)
+- Fix for bug 1022444 (abhgupta@redhat.com)
+- Merge pull request #4002 from smarterclayton/app_metadata_field
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #4001 from abhgupta/abhgupta-dev
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for bug 1022370, 1023207 (abhgupta@redhat.com)
+- Add application metadata and validators (ccoleman@redhat.com)
+- fix bz1022948 add link to make_ha if platform allows it (rchopra@redhat.com)
+
+* Fri Oct 25 2013 Adam Miller <admiller@redhat.com> 1.16.5-1
+- Merge pull request #3972 from liggitt/bug_1020009_max_domains_capability
+  (dmcphers+openshiftbot@redhat.com)
+- fix httpclient to handle special header (rchopra@redhat.com)
+- Add config value (jliggitt@redhat.com)
+
+* Thu Oct 24 2013 Adam Miller <admiller@redhat.com> 1.16.4-1
+- kerberos work for broker and console (jliggitt@redhat.com)
+- Merge pull request #3770 from mfojtik/bugzilla/1015187
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3973 from abhgupta/abhgupta-dev
+  (dmcphers+openshiftbot@redhat.com)
+- Modifications to app delete and pending op execution (abhgupta@redhat.com)
+- Use UnfulfilledRequirementException when manifest.yml is too big
+  (mfojtik@redhat.com)
+- Use .present? to check if the :http_proxy is configured (mfojtik@redhat.com)
+- Bug 1015187: Replace curl with httpclient when downloading cartridges
+  (mfojtik@redhat.com)
+
+* Wed Oct 23 2013 Adam Miller <admiller@redhat.com> 1.16.3-1
+- Hide report deployments desc (dmcphers@redhat.com)
+
+* Tue Oct 22 2013 Adam Miller <admiller@redhat.com> 1.16.2-1
+- Bug 1021371 (lnader@redhat.com)
+- Bug 1019109 (lnader@redhat.com)
+- fixed routing for events for backward compatibility (lnader@redhat.com)
+- remove whitespaces from gear status (lnader@redhat.com)
+- Bug 892899 (lnader@redhat.com)
+- Bug 1016782 (lnader@redhat.com)
+- Bug 994419 (lnader@redhat.com)
+- changed links to singular (lnader@redhat.com)
+- Fix for bug 1020440, 1021041, 1021462, 1021467, and a typo
+  (abhgupta@redhat.com)
+- <runtime extended> Fix output parsing for deployed artifacts
+  (jdetiber@redhat.com)
+
+* Mon Oct 21 2013 Adam Miller <admiller@redhat.com> 1.16.1-1
+- fix bz1020169 - fix notify remove ssl cert (rchopra@redhat.com)
+- Merge pull request #3923 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3915 from abhgupta/abhgupta-dev
+  (dmcphers+openshiftbot@redhat.com)
+- fix bz 1020517 - rescue missing min/max; new group instances should respect
+  min_gears limit (rchopra@redhat.com)
+- Fix for bug 1019876 (abhgupta@redhat.com)
+- Fix broker extended tests (rpenta@redhat.com)
+- Merge pull request #3907 from smarterclayton/bug_1019980_keys_not_distributed
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3883 from pravisankar/dev/ravi/card22
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 1019980 - SSH keys not distributed on membership changes
+  (ccoleman@redhat.com)
+- <capacity suggestions> bug 1004686 (lmeyer@redhat.com)
+- <suggestions> record type as attr too (lmeyer@redhat.com)
+- Allow gear_size parameter during application creation and cartridge addition.
+  (rpenta@redhat.com)
+- Merge pull request #3892 from mrunalp/bugs/re_test_fix
+  (dmcphers+openshiftbot@redhat.com)
+- Fix app cont proxy test. (mrunalp@gmail.com)
+- Temporarily disabling test due to upstream bug. (mrunalp@gmail.com)
+- Merge pull request #3868 from rajatchopra/multiplier
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3810 from rajatchopra/routing
+  (dmcphers+openshiftbot@redhat.com)
+- set multiplier of a sparse cart through admin command (rchopra@redhat.com)
+- typo fix (rchopra@redhat.com)
+- Fix deployment test (dmcphers@redhat.com)
+- Merge pull request #3809 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3847 from pmorie/bugs/1017719
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3850 from danmcp/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3845 from pravisankar/dev/ravi/fix-update-cluster
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3811 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 995460 (dmcphers@redhat.com)
+- fixed routing (lnader@redhat.com)
+- Required deployment_id for activate (lnader@redhat.com)
+- disable artifact_url (lnader@redhat.com)
+- corrected plural links and general code clean-up (lnader@redhat.com)
+- Merge pull request #3840 from danmcp/master
+  (dmcphers+openshiftbot@redhat.com)
+- Fix bug 1017719: run all stages of gear upgrade extension (pmorie@gmail.com)
+- Merge pull request #3826 from pravisankar/dev/ravi/bug1016171
+  (dmcphers+openshiftbot@redhat.com)
+- Fix update_cluster op to handle 'removed' flag in framework/web-proxy gears.
+  (rpenta@redhat.com)
+- Merge pull request #3827 from rajatchopra/fix_bz997008
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 1016171 - Fix domain allowed_gear_sizes  in oo-admin-ctl-user
+  (rpenta@redhat.com)
+- Fix typo (dmcphers@redhat.com)
+- ensure you return the last activated deployment (dmcphers@redhat.com)
+- Merge pull request #3832 from smarterclayton/bug_1013293_fix_doc_links
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3829 from mrunalp/bugs/test_fixes
+  (dmcphers+openshiftbot@redhat.com)
+- do not run domain jobs if not needed (rchopra@redhat.com)
+- Mark test not valid for F19. (mrunalp@gmail.com)
+- Merge pull request #3821 from smarterclayton/bug_1017000_fix_more_routes
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3773 from
+  smarterclayton/to_stage_error_on_changing_members
+  (dmcphers+openshiftbot@redhat.com)
+- Expose both versions of routes (gear-groups and gear_groups)
+  (ccoleman@redhat.com)
+- Bug 1013293 - Docs for link changes (ccoleman@redhat.com)
+- Allow API versions >= 1.2 to create multiple domains (ccoleman@redhat.com)
+- Bug 1017000 - Expose correct form of gear-groups (ccoleman@redhat.com)
+- routing endpoint migration for gears (rchopra@redhat.com)
+- add alias and ssl cert in routing notifiers (rchopra@redhat.com)
+- Merge pull request #3797 from smarterclayton/fix_remaining_singular_routes
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3792 from liggitt/new_relic_bugs
+  (dmcphers+openshiftbot@redhat.com)
+- Update REST API objects to point to singular routes (ccoleman@redhat.com)
+- Fix typos and NPE discovered in newrelic logs (jliggitt@redhat.com)
+- Fix bug 1016432 - restrict domain rename to owner (jliggitt@redhat.com)
+- Adding deploy migration for broker auth (dmcphers@redhat.com)
+- Revert "This test has started to fail.  Disable to allow other builds to go
+  through until it can be diagnosed." (dmcphers@redhat.com)
+- This test has started to fail.  Disable to allow other builds to go through
+  until it can be diagnosed. (rmillner@redhat.com)
+- Job error when changing members of app (ccoleman@redhat.com)
+- Merge pull request #3747 from rmillner/frontend-sni-proxy
+  (dmcphers+openshiftbot@redhat.com)
+- Create HAProxy SNI proxy plugin package and use endpoint protocols
+  (rmillner@redhat.com)
+- Deploy WIP - applications under domains resource must also support update
+  (contact@fabianofranz.com)
+- Add sha1 (dmcphers@redhat.com)
+- Handle reporting deployment for initial app create (dmcphers@redhat.com)
+- store and return times as times (dmcphers@redhat.com)
+- Reenabled routes for deployments under application (contact@fabianofranz.com)
+- Reenabled route for UPDATE application (contact@fabianofranz.com)
+- fixed LIST_DEPLOYMENTS (lnader@redhat.com)
+- Fix merge (dmcphers@redhat.com)
+- Making links consistent (dmcphers@redhat.com)
+- Fixing tests and resolving remaining communication between broker and node
+  for deployments (dmcphers@redhat.com)
+- Stop using a deployment as a creation mechanism for a deployment
+  (dmcphers@redhat.com)
+- add sha to deployment (dmcphers@redhat.com)
+- Allow for floats with time storage (dmcphers@redhat.com)
+- fixed typo (lnader@redhat.com)
+- bug fixes (lnader@redhat.com)
+- activation validations (dmcphers@redhat.com)
+- Adding activations to deployments (dmcphers@redhat.com)
+- rollback -> activate (dmcphers@redhat.com)
+- Rolling restart from the broker (dmcphers@redhat.com)
+- Update move gear for build-deploy changes (andy.goldstein@gmail.com)
+- Add broker auth as permanent fixture of every app (dmcphers@redhat.com)
+- update_cluster fixes (andy.goldstein@gmail.com)
+- Don't send empty config on app create (dmcphers@redhat.com)
+- add update deployments scope (dmcphers@redhat.com)
+- Fixing tests (dmcphers@redhat.com)
+- Adjusting to pending op changes (dmcphers@redhat.com)
+- Fix bson hash error (dmcphers@redhat.com)
+- Rollback to last deployment and tests (lnader@redhat.com)
+- Fixing tests and squashing bugs (dmcphers@redhat.com)
+- Fixing tests (dmcphers@redhat.com)
+- Persist app config changes in mongo (dmcphers@redhat.com)
+- Pass back deployments in new param from deploy called through the rest api
+  (dmcphers@redhat.com)
+- Add oo-gear-registry and change haproxy to use platform gear registry
+  (pmorie@gmail.com)
+- Deploy WIP (dmcphers@redhat.com)
+- Added deployment links to older rest models (lnader@redhat.com)
+- Deploy WIP (dmcphers@redhat.com)
+- Add structure to gear registry (andy.goldstein@gmail.com)
+- Deploy WIP (dmcphers@redhat.com)
+- collapse the git refs into 1 (dmcphers@redhat.com)
+- Deploy WIP (dmcphers@redhat.com)
+- cleanup (dmcphers@redhat.com)
+- Added tests and links for application config update (lnader@redhat.com)
+- Adding application config WIP (dmcphers@redhat.com)
+- Build & deployment improvements (andy.goldstein@gmail.com)
+- Broker Build and Deployment (lnader@redhat.com)
+- bump_minor_versions for sprint 35 (admiller@redhat.com)
+
+* Fri Oct 04 2013 Adam Miller <admiller@redhat.com> 1.15.10-1
+- Merge pull request #3768 from abhgupta/abhgupta-dev
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3739 from smarterclayton/move_new_domain_fields_to_api_13
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for bug 1014837 (abhgupta@redhat.com)
+- Isolate new domain attributes to API 1.3 and above (ccoleman@redhat.com)
+
+* Thu Oct 03 2013 Adam Miller <admiller@redhat.com> 1.15.9-1
+- Merge pull request #3298 from Miciah/bug-993440-restapplication-initialize-
+  check-if-cart-is-nil (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3757 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3759 from kraman/test_case_fixes
+  (dmcphers+openshiftbot@redhat.com)
+- fix cart order calculations (rchopra@redhat.com)
+- Add and use find_cartridge_or_raise_exception (miciah.masters@gmail.com)
+- Bug 980306 (lnader@redhat.com)
+- Remove gear removed checks which were added before just for extra safety.
+  (rpenta@redhat.com)
+- Have CloudUser create a new CapabilityProxy every time to fix
+  application_test.rb#test_scaling_and_storage_events_on_application on F19.
+  (kraman@gmail.com)
+- Fix PHP cartridge to wait upto 5 sec for Apache to start and create a pid
+  file before returning. This is needed because Apache 2.4 on F19 does a
+  reverse DNS lookup on the server hostname and causes a race condition in
+  runtime-cartridge-php.feature testcase. (kraman@gmail.com)
+
+* Wed Oct 02 2013 Adam Miller <admiller@redhat.com> 1.15.8-1
+- Merge pull request #3756 from pravisankar/dev/ravi/rename-node-removed
+  (dmcphers+openshiftbot@redhat.com)
+- Renamed field 'node_removed' to 'removed' in gear model (rpenta@redhat.com)
+- Merge pull request #3742 from pravisankar/dev/ravi/misc-bugfixes
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3748 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- fix bz1012709 - remove gear's ssh keys. add debugging to admin-clear-pending-
+  ops (rchopra@redhat.com)
+- Bug 1012970 - Fix pending op group: ReplaceAllSshKeysOpGroup.
+  (rpenta@redhat.com)
+
+* Tue Oct 01 2013 Adam Miller <admiller@redhat.com> 1.15.7-1
+- Merge pull request #3746 from
+  jwforres/bug_998396_no_api_response_member_delete
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3744 from detiber/bz1013788
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 998396 - member remove api doesnt return a message (jforrest@redhat.com)
+- Bug 1013788 - Remove first_uid from district model (jdetiber@redhat.com)
+- Bug 1013429 (asari.ruby@gmail.com)
+
+* Mon Sep 30 2013 Troy Dawson <tdawson@redhat.com> 1.15.6-1
+- oo-admin-repair changes (rpenta@redhat.com)
+- Remove skip_node_ops flag from user/domain/app/district models.
+  (rpenta@redhat.com)
+- Bug 1012297 - Pass gear_id instead of gear_uuid to application remove_gear()
+  (rpenta@redhat.com)
+- Merge pull request #3732 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- fix bz1012901 - observer needs to be called (rchopra@redhat.com)
+- Merge pull request #3727 from smarterclayton/fix_environment_variable_routes
+  (dmcphers+openshiftbot@redhat.com)
+- fix bz1012374 - extra check for expose port for sparse-carts
+  (rchopra@redhat.com)
+- Update singular routes to use singular_path (ccoleman@redhat.com)
+
+* Fri Sep 27 2013 Troy Dawson <tdawson@redhat.com> 1.15.5-1
+- Force resolving domains to avoid double query (jliggitt@redhat.com)
+- Membership changes (jliggitt@redhat.com)
+- Origin UI 72 - Membership (ccoleman@redhat.com)
+
+* Thu Sep 26 2013 Troy Dawson <tdawson@redhat.com> 1.15.4-1
+- Merge pull request #3707 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3712 from teddythetwig/ssl_to_gear_tests
+  (dmcphers+openshiftbot@redhat.com)
+- add mappings support to routing spi, and add protocols to cart manifests
+  (rchopra@redhat.com)
+- Feature tests for ssl_to_gear, V3 of mock cart serves https at primary
+  endpoint on port 8123 (teddythetwig@gmail.com)
+- Fix for bug 1012138 (abhgupta@redhat.com)
+
+* Wed Sep 25 2013 Troy Dawson <tdawson@redhat.com> 1.15.3-1
+- Merge pull request #3691 from BanzaiMan/idle_websockets
+  (dmcphers+openshiftbot@redhat.com)
+- Add Node.js 0.10 tests to runtime-cartridge-nodejs.feature
+  (asari.ruby@gmail.com)
+- Merge pull request #3693 from pravisankar/dev/ravi/card98
+  (dmcphers+openshiftbot@redhat.com)
+- Added skip_node_ops flag to app/domain/user/district models.
+  (rpenta@redhat.com)
+- typo fix (rchopra@redhat.com)
+
+* Tue Sep 24 2013 Troy Dawson <tdawson@redhat.com> 1.15.2-1
+- Merge pull request #3696 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3647 from detiber/runtime_card_255
+  (dmcphers+openshiftbot@redhat.com)
+- endpoints included for rest call to gear_groups (rchopra@redhat.com)
+- <README.auth_plugin.md> Fixed typo (jolamb@redhat.com)
+- Card origin_runtime_255: Publish district uid limits to nodes
+  (jdetiber@redhat.com)
+
+* Tue Sep 24 2013 Troy Dawson <tdawson@redhat.com> 1.15.1-1
+- Merge pull request #3686 from rajatchopra/new_master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3682 from abhgupta/abhgupta-dev
+  (dmcphers+openshiftbot@redhat.com)
+- routing spi changes (rchopra@redhat.com)
+- Fix for bug 1010632 (abhgupta@redhat.com)
+- Fixing AddCompOp code (abhgupta@redhat.com)
+- Fixes for pending_op changes (abhgupta@redhat.com)
+- Merge pull request #3673 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3667 from danmcp/master
+  (dmcphers+openshiftbot@redhat.com)
+- fix indexing (rchopra@redhat.com)
+- optimize find all district scenarios (dmcphers@redhat.com)
+- Add index to district uuid (dmcphers@redhat.com)
+- Fix tests to use ruby193-mcollective only on RHEL. Fix nodejs cart to work on
+  F19 and RHEL. (kraman@gmail.com)
+- Merge pull request #3666 from jwhonce/wip/secret_token
+  (dmcphers+openshiftbot@redhat.com)
+- Creating the app secret token and sending to gear creation requests
+  (abhgupta@redhat.com)
+- Card origin_runtime_102 - Support OPENSHIFT_SECRET_TOKEN (jhonce@redhat.com)
+- Merge pull request #3578 from abhgupta/abhgupta-dev
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3656 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- First draft of changes to create subclasses for pending ops
+  (abhgupta@redhat.com)
+- Rescue OOException and include result_io in message (lnader@redhat.com)
+- Merge pull request #3654 from danmcp/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3646 from ironcladlou/dev/test-fixes
+  (dmcphers+openshiftbot@redhat.com)
+- Handle categories not used (dmcphers@redhat.com)
+- fix configure order calculation - bz1008609 (rchopra@redhat.com)
+- Fix mock cartridge verification in cuke tests (ironcladlou@gmail.com)
+- add index for created_at (rchopra@redhat.com)
+- add index for created_at field for clear-pending-ops (rchopra@redhat.com)
+- bump_minor_versions for sprint 34 (admiller@redhat.com)
+
+* Thu Sep 12 2013 Adam Miller <admiller@redhat.com> 1.14.8-1
+- Merge pull request #3631 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- fix bz1003014 - find_cartridge should search for 'Name' as well
+  (rchopra@redhat.com)
+
+* Thu Sep 12 2013 Adam Miller <admiller@redhat.com> 1.14.7-1
+- Merge pull request #3621 from smarterclayton/storage_rest_response_broken
+  (dmcphers+openshiftbot@redhat.com)
+- Sparse group_instance support broke rest api response for carts
+  (ccoleman@redhat.com)
+
+* Wed Sep 11 2013 Adam Miller <admiller@redhat.com> 1.14.6-1
+- fix bz1006645 (rchopra@redhat.com)
+- Fix for bug 1005007 and bug 1006526 (abhgupta@redhat.com)
+- Merge pull request #3582 from kraman/test_case_fixes
+  (dmcphers+openshiftbot@redhat.com)
+- Fixing code to allow admin to restrict # of domains to be less than # of
+  gears allocated to a user. (kraman@gmail.com)
+
+* Tue Sep 10 2013 Adam Miller <admiller@redhat.com> 1.14.5-1
+- Merge pull request #3592 from abhgupta/abhgupta-scheduler
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3589 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for bug 1005631 (abhgupta@redhat.com)
+- Merge pull request #3583 from jwforres/admin_console_capacity_planning-fork
+  (dmcphers+openshiftbot@redhat.com)
+- fix enable_ha with respect to max gear limits of web cart + config fixes
+  (rchopra@redhat.com)
+- <admin libs> remove licenses, minor format (lmeyer@redhat.com)
+- <admin suggestions> fix bug 1004671 (lmeyer@redhat.com)
+- <admin suggestions> allow 1-node districts (lmeyer@redhat.com)
+- <admin suggestions> fix bug 1004297 (lmeyer@redhat.com)
+- <admin suggestions> fix bug 1004157 (lmeyer@redhat.com)
+- <admin suggestions> library to suggest admin changes (lmeyer@redhat.com)
+- <admin stats> refactor and mods for admin console (lmeyer@redhat.com)
+
+* Mon Sep 09 2013 Adam Miller <admiller@redhat.com> 1.14.4-1
+- Use EXTERNAL_ETH_DEV if its set in node.conf. (rmillner@redhat.com)
+
+* Fri Sep 06 2013 Adam Miller <admiller@redhat.com> 1.14.3-1
+- Merge pull request #3558 from pravisankar/dev/ravi/env-var-fix
+  (dmcphers+openshiftbot@redhat.com)
+- Remove environment variables support from REST 1.0 api version
+  (rpenta@redhat.com)
+- Using _id instead of uuid for application (abhgupta@redhat.com)
+
+* Thu Sep 05 2013 Adam Miller <admiller@redhat.com> 1.14.2-1
+- Merge pull request #3538 from pmorie/dev/fix_tests
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3548 from jwhonce/wip/oo-devel-node
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3543 from fotioslindiakos/nodejs
+  (dmcphers+openshiftbot@redhat.com)
+- SCL support for nodejs (fotios@redhat.com)
+- Node Platform - Fix cucumber tests (jhonce@redhat.com)
+- WIP Node Platform - oo-devel-node: clean up oo-* scripts that emulate mco
+  calls (jhonce@redhat.com)
+- Fix platform upgrade tests (pmorie@gmail.com)
+- enable ha feature (rchopra@redhat.com)
+- fixing test cases for phpmyadmin-4 (dmcphers@redhat.com)
+
+* Thu Aug 29 2013 Adam Miller <admiller@redhat.com> 1.14.1-1
+- Bug 1002685 - Downcase domain names when fetching applications by domain
+  (ccoleman@redhat.com)
+- cleanup (dmcphers@redhat.com)
+- Merge pull request #3399 from smarterclayton/propagate_app_id_to_gears
+  (dmcphers+openshiftbot@redhat.com)
+- Merge remote-tracking branch 'origin/master' into propagate_app_id_to_gears
+  (ccoleman@redhat.com)
+- cleanup (dmcphers@redhat.com)
+- cleanup (dmcphers@redhat.com)
+- Fix env var subscription tests (pmorie@gmail.com)
+- Merge remote-tracking branch 'origin/master' into propagate_app_id_to_gears
+  (ccoleman@redhat.com)
+- Merge pull request #3485 from pmorie/dev/upgrades
+  (dmcphers+openshiftbot@redhat.com)
+- Make dependency on 0.0.1 version of mock explicit for upgrade tests
+  (pmorie@gmail.com)
+- cleanup (dmcphers@redhat.com)
+- Merge remote-tracking branch 'origin/master' into propagate_app_id_to_gears
+  (ccoleman@redhat.com)
+- Merge pull request #3446 from abhgupta/abhgupta-scheduler
+  (dmcphers+openshiftbot@redhat.com)
+- cleanup (dmcphers@redhat.com)
+- Fix test cases (ccoleman@redhat.com)
+- Merge pull request #3477 from
+  smarterclayton/protect_environment_vars_with_edit
+  (dmcphers+openshiftbot@redhat.com)
+- Environment variables should be protected with :edit permission
+  (ccoleman@redhat.com)
+- Mongoid 3.1 does not return the Array that was stored on the model
+  (ccoleman@redhat.com)
+- Fix for bug 997008 (abhgupta@redhat.com)
+- bump_minor_versions for sprint 33 (admiller@redhat.com)
+- Merge pull request #3452 from pravisankar/dev/ravi/bug998905
+  (dmcphers+openshiftbot@redhat.com)
+- Added environment variable name limitations  - Limit length to 128 bytes.  -
+  Allow letters, digits and underscore but can't begin with digit
+  (rpenta@redhat.com)
+- Switch OPENSHIFT_APP_UUID to equal the Mongo application '_id' field
+  (ccoleman@redhat.com)
+- Changes for doing atomic updates on embedded documents (abhgupta@redhat.com)
+
+* Wed Aug 21 2013 Adam Miller <admiller@redhat.com> 1.13.8-1
+- Merge pull request #3451 from
+  smarterclayton/bug_997567_alias_error_message_vague
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 997567 - The alias error message is too vague (ccoleman@redhat.com)
+
+* Wed Aug 21 2013 Adam Miller <admiller@redhat.com> 1.13.7-1
+- Merge pull request #3441 from jwhonce/wip/user_vars
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3326 from kraman/admin_command_connection_hooks
+  (dmcphers+openshiftbot@redhat.com)
+- origin_broker_77 (lnader@redhat.com)
+- Merge pull request #3439 from pravisankar/dev/ravi/user-env-bugs
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 998794 - Allow blank value for a user environment variable
+  (rpenta@redhat.com)
+- Node Platform - Add .env/user_vars during upgrade (jhonce@redhat.com)
+- Merge pull request #3436 from pmorie/dev/upgrades
+  (dmcphers+openshiftbot@redhat.com)
+- Fix creating new endpoints during incompatible upgrades (pmorie@gmail.com)
+- New admin command to call connection hooks on an application.
+  (kraman@gmail.com)
+
+* Tue Aug 20 2013 Adam Miller <admiller@redhat.com> 1.13.6-1
+- Merge pull request #3435 from
+  smarterclayton/bug_997848_capabilities_not_shown_via_api
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 997848 - Inherited capabilities not in REST API (ccoleman@redhat.com)
+- Fix cucumber step ambiguity (ironcladlou@gmail.com)
+- Merge pull request #3398 from detiber/bz994445
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3413 from sosiouxme/admin-stats-fixes
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3410 from pravisankar/dev/ravi/card86
+  (dmcphers+openshiftbot@redhat.com)
+- <Admin::Stats> use only strings for hash keys (lmeyer@redhat.com)
+- <Admin::Stats> exclude inactive nodes from eff avail gears
+  (lmeyer@redhat.com)
+- <Admin::Stats> fix minor bug - NONE district should be HashWithReaders
+  (lmeyer@redhat.com)
+- Added REST api support for user environment variables (rpenta@redhat.com)
+- Added User environment variables support in broker (rpenta@redhat.com)
+- WIP Node Platform - Add support for settable user variables
+  (jhonce@redhat.com)
+- Bug 99445 - Better error message for No nodes available (jdetiber@redhat.com)
+
+* Mon Aug 19 2013 Adam Miller <admiller@redhat.com> 1.13.5-1
+- Fixing typos (dmcphers@redhat.com)
+- Bug 997785 (dmcphers@redhat.com)
+- Merge pull request #3382 from smarterclayton/builder_scope_incorrect
+  (dmcphers+openshiftbot@redhat.com)
+- <cartridge versions> origin_runtime_219, fix up cart references for renamed
+  cart https://trello.com/c/evcTYKdn/219-3-adjust-out-of-date-cartridge-
+  versions (jolamb@redhat.com)
+- Node Platform - Fixed grep in node_step.rb (jhonce@redhat.com)
+- Fix builder scope by introducing a domain builder scope (ccoleman@redhat.com)
+
+* Fri Aug 16 2013 Adam Miller <admiller@redhat.com> 1.13.4-1
+- Merge pull request #3390 from pmorie/dev/fix_tests
+  (dmcphers+openshiftbot@redhat.com)
+- Fix several tests that now use incorrect versions (pmorie@gmail.com)
+- Merge pull request #3370 from
+  smarterclayton/bug_997246_prohibit_blank_domains
+  (dmcphers+openshiftbot@redhat.com)
+- fix bz997078 (rchopra@redhat.com)
+- Merge pull request #3375 from smarterclayton/convert_scope_to_string
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3358 from sosiouxme/oo-stats-mods
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3354 from dobbymoodge/origin_runtime_219
+  (dmcphers+openshiftbot@redhat.com)
+- <cartridges> Additional cart version and test fixes (jolamb@redhat.com)
+- Merge pull request #3368 from smarterclayton/find_by_user_broken_on_app
+  (dmcphers+openshiftbot@redhat.com)
+- <oo-stats> ability to read results from file; more (lmeyer@redhat.com)
+- <Admin::Stats> refactor classes and tests (lmeyer@redhat.com)
+- Treat domain_scope= the same as app_scope= (ccoleman@redhat.com)
+- Bug 997246 - Prohibit blank domains (ccoleman@redhat.com)
+- Unable to scale up or snapshot an app (ccoleman@redhat.com)
+
+* Thu Aug 15 2013 Adam Miller <admiller@redhat.com> 1.13.3-1
+- Merge pull request #3359 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- migration helpers and rest interface for port information of gears
+  (rchopra@redhat.com)
+- Upgrade tool enhancements (ironcladlou@gmail.com)
+
+* Wed Aug 14 2013 Adam Miller <admiller@redhat.com> 1.13.2-1
+- Merge pull request #3322 from smarterclayton/origin_ui_73_membership_model
+  (dmcphers+openshiftbot@redhat.com)
+- save exposed port interfaces of a gear (rchopra@redhat.com)
+- Merge pull request #3290 from
+  smarterclayton/bug_992464_not_raising_on_not_found_token
+  (dmcphers+openshiftbot@redhat.com)
+- Check denormalization in oo-admin-chk (ccoleman@redhat.com)
+- Only schedule domain jobs on applications that actually need it
+  (ccoleman@redhat.com)
+- Default to test mode membership off (ccoleman@redhat.com)
+- Review comments (ccoleman@redhat.com)
+- Bug 995371 - Direct parameters to members were ignored (ccoleman@redhat.com)
+- Ensure only users with ssh access are added with keys (ccoleman@redhat.com)
+- * Implement a membership model for OpenShift that allows an efficient query
+  of user access based on each resource. * Implement scope limitations that
+  correspond to specific permissions * Expose membership info via the REST API
+  (disableable via config) * Allow multiple domains per user, controlled via a
+  configuration flag * Support additional information per domain
+  (application_count and gear_counts) to improve usability * Let domains
+  support the allowed_gear_sizes option, which limits the gear sizes available
+  to apps in that domain * Simplify domain update interactions - redundant
+  validation removed, and behavior of responses differs slightly. * Implement
+  migration script to enable data (ccoleman@redhat.com)
+- Bug 992464 - Authorization token needs to raise when checking eventual
+  consistency (ccoleman@redhat.com)
+
+* Thu Aug 08 2013 Adam Miller <admiller@redhat.com> 1.13.1-1
+- Merge pull request #3307 from jwhonce/wip/java_opt_ext
+  (dmcphers+openshiftbot@redhat.com)
+- Card origin_runtime_148 - append JAVA_OPT_EXT to JAVA_OPT (jhonce@redhat.com)
+- Various cleanup (dmcphers@redhat.com)
+- cleanup (dmcphers@redhat.com)
+- Fix for bug 982855 (abhgupta@redhat.com)
+- <mongo> allow db access with mongo client 1.6 (lmeyer@redhat.com)
+- Merge pull request #3274 from pmorie/bugs/991225
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3276 from detiber/fixtests
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 991225: upgrade script should be run before setup during incompatible
+  upgrade (pmorie@gmail.com)
+- Fix runtime-extended tests for jboss cartridges (jdetiber@redhat.com)
+- <admin/stats> should fix oo-stats bug 988554 (lmeyer@redhat.com)
+- <admin/stats> add unit tests, fix a bug (lmeyer@redhat.com)
+- bump_minor_versions for sprint 32 (admiller@redhat.com)
+
+* Wed Jul 31 2013 Adam Miller <admiller@redhat.com> 1.12.7-1
+- Merge pull request #3250 from jwhonce/wip/extended_tests
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3245 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3247 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- WIP Node Platform - Restored env_var_subscription_steps.rb
+  (jhonce@redhat.com)
+- Merge pull request #3246 from pmorie/bugs/971120
+  (dmcphers+openshiftbot@redhat.com)
+- fix bz990341 (rchopra@redhat.com)
+- Bug 989856 - fix for embedded carts (lnader@redhat.com)
+- Bug 971120: refactor openshift-node.feature (pmorie@gmail.com)
+
+* Wed Jul 31 2013 Adam Miller <admiller@redhat.com> 1.12.6-1
+- Merge pull request #3225 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3237 from abhgupta/abhgupta-scheduler
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 988255 (lnader@redhat.com)
+- Bug 989856 (lnader@redhat.com)
+- Merge pull request #3238 from jwhonce/bug/985514
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3228 from pravisankar/dev/ravi/bug984005
+  (dmcphers+openshiftbot@redhat.com)
+- Fix for bug 989650 (abhgupta@redhat.com)
+- Merge pull request #3229 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Set 'register_dns' op to 'rolledback' state in case of DNSLoginException.
+  (rpenta@redhat.com)
+- Bug 985514 - Update CartridgeRepository when mcollectived restarted
+  (jhonce@redhat.com)
+- fix in scope for scaling issues (rchopra@redhat.com)
+- Capabilities validator should still be called (ccoleman@redhat.com)
+
+* Tue Jul 30 2013 Adam Miller <admiller@redhat.com> 1.12.5-1
+- Fix for bug 989650, bug 988115, and added additional check in oo-admin-chk
+  (abhgupta@redhat.com)
+
+* Mon Jul 29 2013 Adam Miller <admiller@redhat.com> 1.12.4-1
+- Bug 982738 (dmcphers@redhat.com)
+- Merge pull request #3134 from smarterclayton/changes_for_membership
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3194 from rajatchopra/ha
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3183 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge remote-tracking branch 'origin/master' into changes_for_membership
+  (ccoleman@redhat.com)
+- redo sparse cart addition/deletion as user can override their scaling factors
+  (rchopra@redhat.com)
+- Bug 982921 (lnader@redhat.com)
+- Merge pull request #3180 from rajatchopra/fix_bz984481
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 980376 (lnader@redhat.com)
+- fix bz984481 (rchopra@redhat.com)
+- Merge remote-tracking branch 'origin/master' into changes_for_membership
+  (ccoleman@redhat.com)
+- Typo during merge (ccoleman@redhat.com)
+- Merge remote-tracking branch 'origin/master' into changes_for_membership
+  (ccoleman@redhat.com)
+- Merge remote-tracking branch 'origin/master' into changes_for_membership
+  (ccoleman@redhat.com)
+- Return creation_time on domains (ccoleman@redhat.com)
+- Simplify capabilities to be more model like, and support clean proxying of
+  inherited properties (ccoleman@redhat.com)
+- Support LIST_DOMAINS_BY_OWNER, SHOW_DOMAIN, and SHOW_APPLICATION_BY_DOMAIN
+  (ccoleman@redhat.com)
+- Support running broker tests directly Force scopes to use checked ids and
+  avoid symbolizing arbitrary strings Use .present? instead of .count > 0 (for
+  performance) Handle ValidationExceptions globally (ccoleman@redhat.com)
+
+* Fri Jul 26 2013 Adam Miller <admiller@redhat.com> 1.12.3-1
+- Ensure that git version is 1.8.* before setting push.default simple
+  (kraman@gmail.com)
+- Merge pull request #3174 from lnader/master
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3141 from detiber/jbaws
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 982921 (lnader@redhat.com)
+- Bug 982107 (lnader@redhat.com)
+- Bug 987799 (lnader@redhat.com)
+- Merge pull request #3172 from ironcladlou/bz/987836
+  (dmcphers+openshiftbot@redhat.com)
+- JBoss Deployment verification (jdetiber@redhat.com)
+- Bug 987836: Refactor hot deploy marker detection (ironcladlou@gmail.com)
+- Merge pull request #3164 from pmorie/bugs/mco_bounce
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3160 from pravisankar/dev/ravi/card78
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3156 from kraman/bugfix3
+  (dmcphers+openshiftbot@redhat.com)
+- Use service script instead of SIGUSR to reload mcollective (pmorie@gmail.com)
+- For consistency, rest api response must display 'delete' instead 'destroy'
+  for user/domain/app (rpenta@redhat.com)
+- Adding Fedora vs RHEL cases for idler. Ruby 2.0 in F19 runs as ruby-mri vs
+  ruby in RHEL (kraman@gmail.com)
+
+* Wed Jul 24 2013 Adam Miller <admiller@redhat.com> 1.12.2-1
+- fix bz987773, make max calculation use a floating point (rchopra@redhat.com)
+- <application.rb> Add feature to carts to handle wildcard ENV variable
+  subscriptions (jolamb@redhat.com)
+- Merge pull request #3088 from lnader/card-25
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3147 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- Bug 987268 (lnader@redhat.com)
+- origin_broker_25 (lnader@redhat.com)
+- Merge pull request #3146 from sosiouxme/fake-data
+  (dmcphers+openshiftbot@redhat.com)
+- fix scaling issue (rchopra@redhat.com)
+- Bug 971265 (dmcphers@redhat.com)
+- Merge pull request #3137 from rajatchopra/ha
+  (dmcphers+openshiftbot@redhat.com)
+- check max limits for non-sparse carts too; fix for bz976734
+  (rchopra@redhat.com)
+- <admin-console> create script to load fake data (lmeyer@redhat.com)
+- Merge pull request #3138 from rajatchopra/master
+  (dmcphers+openshiftbot@redhat.com)
+- fix issues with move code for multiple haproxy cases (rchopra@redhat.com)
+- Check cartridge configure order dependency in the broker (rpenta@redhat.com)
+- Allow plugin carts to reside either on web-framework or non web-framework
+  carts. HA-proxy cart manifest will say it will reside with web-framework
+  (earlier it was done in the reverse order). (rpenta@redhat.com)
+- <admin-console> reuse admin stats library (lmeyer@redhat.com)
+- <oo-stats> splitting into first admin library class (lmeyer@redhat.com)
+- Merge pull request #3125 from rajatchopra/ha
+  (dmcphers+openshiftbot@redhat.com)
+- make haproxy a sparse cart (rchopra@redhat.com)
+- Merge pull request #3121 from rajatchopra/ha
+  (dmcphers+openshiftbot@redhat.com)
+- support for sparse cartridges (multiple haproxy) (rchopra@redhat.com)
+- Verified that Mongoid::Errors::DocumentNotFound has not been changed.
+  Updating test so that class loads in F19 (kraman@gmail.com)
+- Merge pull request #3118 from pmorie/dev/upgrades
+  (dmcphers+openshiftbot@redhat.com)
+- Add version check for gear upgrade extension (pmorie@gmail.com)
+- Merge remote-tracking branch 'origin/master' into
+  handle_global_exceptions_properly (ccoleman@redhat.com)
+- Merge pull request #3112 from kraman/rhel_fixes
+  (dmcphers+openshiftbot@redhat.com)
+- Clearing SCL cache environment before invoking scripts since scripts may load
+  different scl envs. (kraman@gmail.com)
+- Merge pull request #3110 from dobbymoodge/platform_upgrade-refactor
+  (dmcphers+openshiftbot@redhat.com)
+- <cucumber> Cleaning up commented code blocks (jolamb@redhat.com)
+- Remove ecdsa ssh key type from supported list. Rationale: Due to patent
+  concerns, ECC support is not bundled in fedora/rhel(needed for ecdsa key
+  generation).            So even if someone has a valid ecdsa keys, sshd
+  server on our node won't be able to authenticate the user.
+  (rpenta@redhat.com)
+- <cucumber> Refactoring upgrade_steps.rb to be cart-agnostic
+  (jolamb@redhat.com)
+- Handle nested subclasses in error responses (ccoleman@redhat.com)
+- Merge remote-tracking branch 'origin/master' into
+  handle_global_exceptions_properly (ccoleman@redhat.com)
+- Convert keys_controller - work around double deletion bug in console code
+  (ccoleman@redhat.com)
+- Merge pull request #3085 from sosiouxme/admin-console-broker
+  (dmcphers+openshiftbot@redhat.com)
+- Fix failing test in api_responses (ccoleman@redhat.com)
+- Merge remote-tracking branch 'origin/master' into
+  handle_global_exceptions_properly (ccoleman@redhat.com)
+- Missed a rescue of Mongoid::Errors::DocumentNotFound (ccoleman@redhat.com)
+- Merge remote-tracking branch 'origin/master' into
+  handle_global_exceptions_properly (ccoleman@redhat.com)
+- Remove binding.pry, causing failures (ccoleman@redhat.com)
+- Merge pull request #3091 from pmorie/dev/upgrades
+  (dmcphers+openshiftbot@redhat.com)
+- <broker> re-base the broker URI from /broker => / (lmeyer@redhat.com)
+- Add support for upgrade script to be called during cartridge upgrades.
+  (pmorie@gmail.com)
+- Merge pull request #3083 from smarterclayton/strong_consistency_is_default
+  (dmcphers+openshiftbot@redhat.com)
+- Authorization test case was wrong (ccoleman@redhat.com)
+- Merge pull request #3074 from kraman/bugfix2
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3069 from sosiouxme/admin-console-mcollective
+  (dmcphers+openshiftbot@redhat.com)
+- Merge pull request #3072 from pravisankar/dev/ravi/bug969876
+  (dmcphers+openshiftbot@redhat.com)
+- Fixes for F19 runtime extended tests * Fix platform-oo-admin.feature to use
+  mock instead of ruby and python * Fix cloud domain used in
+  application_steps.rb * Add missing haproxy/scaled gear steps * Fix jenkins
+  test to understand different api versions    - Old api returns color of build
+  - new api returns string (notbuilt, built, etc) (kraman@gmail.com)
+- <container proxy> adjust naming for getting facts (lmeyer@redhat.com)
+- <mcollective> whitespace + typo fixes (lmeyer@redhat.com)
+- Make idler test use mock instead of scenario table (pmorie@gmail.com)
+- Merge pull request #3080 from smarterclayton/action_log_should_be_lazy
+  (dmcphers+openshiftbot@redhat.com)
+- Strong consistency is the default for mongoid (ccoleman@redhat.com)
+- Move most DocumentNotFound handling to ApiResponse#render_exception
+  (ccoleman@redhat.com)
+- Merge pull request #3079 from smarterclayton/make_pry_console_available
+  (dmcphers+openshiftbot@redhat.com)
+- Generic exceptions should always be handled with rescue_from Don't return on
+  the last line of controller methods rescue_from handlers should have proper
+  access to user info set via UserActionLog filter (ccoleman@redhat.com)
+- Merge pull request #3058 from smarterclayton/use_deep_dup
+  (dmcphers+openshiftbot@redhat.com)
+- Make set_log_tag lazy, so that all controllers have a default behavior Allow
+  controllers to override log tag on their class, not on the instance Make
+  allowances for legacy behavior (ccoleman@redhat.com)
+- Make Pry console available when ENV['PRY']=1 (ccoleman@redhat.com)
+- Remove UtilHelper.deep_copy for Rails deep_dup (ccoleman@redhat.com)
+- Bug 969876 - Don't run execute_connections if there are no add/remove
+  component ops (rpenta@redhat.com)
+- <mcollective> adding call to retrieve set of facts for admin-console
+  (lmeyer@redhat.com)
+
 * Fri Jul 12 2013 Adam Miller <admiller@redhat.com> 1.12.1-1
 - Merge branch 'master' of github.com:openshift/origin-server
   (admiller@redhat.com)

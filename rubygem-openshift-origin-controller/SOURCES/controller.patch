@@ -1,0 +1,55 @@
+diff --git a/app/models/application.rb b/app/models/application.rb
+index 18b4349..e770b34 100644
+--- a/app/models/application.rb
++++ b/app/models/application.rb
+@@ -1,4 +1,5 @@
+ require 'matrix'
++require 'resolv'
+ 
+ class Matrix
+   def []=(i, j, x)
+@@ -885,6 +886,29 @@ class Application
+     "#{gear_name || canonical_name}-#{domain_namespace}.#{Rails.configuration.openshift[:domain_suffix]}"
+   end
+ 
++  # Returns the IP address for the primary application gear
++  # @return [String]
++  def resolveIp(fqdn=nil)
++    begin
++      return Resolv.getaddress(fqdn)
++    rescue Exception => e
++      return fqdn
++    end
++  end
++
++  ##
++  # Returns the fqdn for the primary application gear if config SSH_FQDN is true,
++  # otherwise returns the IP address
++  # @return [String]
++  def fqdnOrIp(fqdn=nil)
++    if Rails.configuration.openshift[:ssh_fqdn] == "true"
++      fqdn
++    else
++      resolveIp(fqdn)
++    end
++  end
++
++
+   ##
+   # Returns the SSH URI for an application gear (unless specified, the primary)
+   # @return [String]
+@@ -892,12 +916,12 @@ class Application
+     if gear_uuid # specific gear_uuid requested
+       if gears.where(uuid: gear_uuid).count > 0
+         gear = gears.find_by(uuid: gear_uuid)
+-        return "#{gear_uuid}@#{fqdn(gear.name)}"
++        return "#{gear_uuid}@#{fqdnOrIp(fqdn(gear.name))}"
+       end
+     elsif gears.where(app_dns: true).count > 0
+       # get the gear_uuid of head gear
+       gear = gears.find_by(app_dns: true)
+-      return "#{gear.uuid}@#{fqdn}"
++      return "#{gear.uuid}@#{fqdnOrIp(fqdn)}"
+     end
+     ""
+   end

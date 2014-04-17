@@ -1,0 +1,52 @@
+diff --git a/conf/broker.conf b/conf/broker.conf
+index 1c3cbf5..50d7752 100644
+--- a/conf/broker.conf
++++ b/conf/broker.conf
+@@ -120,3 +120,5 @@ ROUTER_HOSTNAME="www.example.com"
+ #Whether to allow obsolete cartridges to be instantiated for a new application or added to an existing application
+ ALLOW_OBSOLETE_CARTRIDGES="false"
+ 
++# Print SSH and GIT uri with fqdn. If "false", IP is printed
++SSH_FQDN="true"
+diff --git a/config/environments/development.rb b/config/environments/development.rb
+index 2328605..d28c100 100644
+--- a/config/environments/development.rb
++++ b/config/environments/development.rb
+@@ -93,7 +93,8 @@ Broker::Application.configure do
+     :allow_ha_applications => conf.get_bool('ALLOW_HA_APPLICATIONS', "false"),
+     :router_hostname => conf.get('ROUTER_HOSTNAME', "www.example.com"),
+     :valid_ssh_key_types => OpenShift::Controller::Configuration.parse_list(conf.get('VALID_SSH_KEY_TYPES', nil)),
+-    :allow_obsolete_cartridges => conf.get_bool('ALLOW_OBSOLETE_CARTRIDGES', "false")
++    :allow_obsolete_cartridges => conf.get_bool('ALLOW_OBSOLETE_CARTRIDGES', "false"),
++    :ssh_fqdn => conf.get("SSH_FQDN", "true")
+   }
+ 
+   config.auth = {
+diff --git a/config/environments/production.rb b/config/environments/production.rb
+index 07c4fe6..c7e3d95 100644
+--- a/config/environments/production.rb
++++ b/config/environments/production.rb
+@@ -82,7 +82,8 @@ Broker::Application.configure do
+     :allow_ha_applications => conf.get_bool('ALLOW_HA_APPLICATIONS', "false"),
+     :router_hostname => conf.get('ROUTER_HOSTNAME', "www.example.com"),
+     :valid_ssh_key_types => OpenShift::Controller::Configuration.parse_list(conf.get('VALID_SSH_KEY_TYPES', nil)),
+-    :allow_obsolete_cartridges => conf.get_bool('ALLOW_OBSOLETE_CARTRIDGES', "false")
++    :allow_obsolete_cartridges => conf.get_bool('ALLOW_OBSOLETE_CARTRIDGES', "false"),
++    :ssh_fqdn => conf.get("SSH_FQDN", "true")
+   }
+ 
+   config.auth = {
+diff --git a/config/environments/test.rb b/config/environments/test.rb
+index a518935..1f602dd 100644
+--- a/config/environments/test.rb
++++ b/config/environments/test.rb
+@@ -91,7 +91,8 @@ Broker::Application.configure do
+     :allow_ha_applications => conf.get_bool('ALLOW_HA_APPLICATIONS', "false"),
+     :router_hostname => conf.get('ROUTER_HOSTNAME', "www.example.com"),
+     :valid_ssh_key_types => OpenShift::Controller::Configuration.parse_list(conf.get('VALID_SSH_KEY_TYPES', nil)),
+-    :allow_obsolete_cartridges => conf.get_bool('ALLOW_OBSOLETE_CARTRIDGES', "false")
++    :allow_obsolete_cartridges => conf.get_bool('ALLOW_OBSOLETE_CARTRIDGES', "false"),
++    :ssh_fqdn => conf.get("SSH_FQDN", "true")
+   }
+ 
+   config.auth = {
